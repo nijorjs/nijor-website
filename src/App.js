@@ -1,6 +1,6 @@
 import "nijor";
 import "nijor/router";
-import "./theme"
+import "nijor/theme"
 import App from 'App.nijor';
 
 //@Routes()

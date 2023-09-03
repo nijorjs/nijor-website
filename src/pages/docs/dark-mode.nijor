@@ -14,6 +14,14 @@
             import "nijor/theme"; // Add this line of code to your App.js file
         </code>
 
+        <code lang="html" file="index.html">
+            &lt;script src="/assets/modules/app.js" type="module" onload="window.nijor.RenderTheme()" async defer&gt;&lt;/script&gt;
+            &lt;!-- 
+            You need to onload="window.nijor.RenderTheme()"
+            so that dark mode automatically gets rendered if the browser color scheme is set to dark 
+            --&gt;
+        </code>
+
         You can write separate CSS code for dark mode inside a Nijor Component by writing the CSS code for dark mode inside another <highlight>style</highlight> tag with the <highlight>dark</highlight> attribute.
         <code>
             &lt;template&gt;
