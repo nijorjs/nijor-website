@@ -1,0 +1,37 @@
+<section n:imported="components/docs/section"/>
+<highlight n:imported="components/docs/highlight"/>
+<body>
+    <section title="Installation">
+        In order to install the nijor cli, you need to have <highlight link="https://nodejs.org">NodeJS</highlight> or <highlight link="https://bun.sh">Bun</highlight> installed on your computer. <br>
+        <br>
+        <h3>Using NPM (nodejs) :</h3><br>
+        <h3>For Linux/Mac</h3>
+        <pre><code lang="bash">sudo npm install @nijor/nijor -g</code></pre>
+        <h3>For Windows</h3>
+        <pre><code lang="bash">npm install @nijor/nijor -g</code></pre><br>
+
+        <h3>Using Bun :</h3><br>
+        <h3>For Linux/Mac</h3>
+        <pre><code lang="bash">sudo bun add @nijor/nijor -g</code></pre>
+        <h3>For Windows</h3>
+        <pre><code lang="bash">bun add @nijor/nijor -g</code></pre><br>
+    </section>
+
+    <section title="Project Structure">
+        A typical Nijor project has a <highlight>src/</highlight>, <highlight>assets/</highlight>, <highlight>index.html</highlight>,<highlight>nijor.config.json</highlight> <br>
+        The <highlight>nijor.config.json</highlight> file stores the configuration for the nijor compiler. <br><br>
+        
+        <h3>The src directory :</h3>
+        The <highlight>src/</highlight> directory is our actual working directory. It contains the following files/directories : <br>
+        (1) <highlight>components/</highlight> directory stores all our <highligh link="/docs/components">components</highligh> <br>
+        (2) <highlight>pages/</highlight> directory stores all our <highligh link="/docs/routing">pages</highligh> for routing <br>
+        (3) <highlight>App.js</highlight> files is the main entry file of our project <br>
+        (4) <highlight>App.nijor</highlight> is the first nijor component that gets rendered in our Nijor project <br><br>
+        
+        <h3>The assets directory :</h3>
+        The <highlight>assets/</highlight> directory stores the assets of your project ; the <highlight>assets/modules/</highlight> directory stores all the compiled nijor pages and components. <br>
+    </section>
+</body>
+<script defer>
+    hljs.highlightAll();
+</script>

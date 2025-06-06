@@ -1,9 +1,9 @@
-<template specs={title,content,link}>
+<body specs={title,content,link}>
     <div class="card">
         <div class="title">{title}</div>
         <div>{content}</div>
     </div>
-</template>
+</body>
 <style>
     .card{
         background-color: white;

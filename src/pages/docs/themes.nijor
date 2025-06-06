@@ -1,0 +1,78 @@
+<section n:imported="components/docs/section"/>
+<highlight n:imported="components/docs/highlight"/>
+<body>
+    <section title="Themes">
+        Dark-Mode is very popular these days. You can implement dark mode using <highlight>CSS media queries</highlight>. But, it has a little problem : dark mode will only get activated if your browser theme is set to dark. <br>
+        So, what if you want to use dark-mode without your browser's dark-mode activated ? or What if you want the user to have the freedom to toggle between dark, light and automatic(based on browser's theme) modes without them changing the theme of the browser ? <br>
+        You need to use Javascript for these use cases, and Nijor has got it covered ! <br>
+        Actually, with Nijor, you can not only implement dark mode, but also other themes. Example : Twitter (now X) has 3 color schemes : light, dark, dim.
+    </section>
+    <section title="theme attribute">
+        In Nijor, we use the theme attribute on style tags to specify the compiler which styles to apply on which theme.
+        The css code inside the style tag with no theme attribute is common code for all the themes and is generally used as the light theme.
+        
+        <pre><code lang="html">
+        &lt;body&gt;
+            &lt;div&gt;
+                &lt;h1&gt;Nomoskar&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/body&gt;
+        &lt;style&gt; 
+            /* This style will be rendered irrespective of theme unless you tweak a few properties in other style tag*/
+            div\{
+                margin: 10px;
+                padding: 10px;
+                background-color: white;
+            }
+            h1\{
+                color: black;
+            }
+        &lt;/style&gt;
+        &lt;style theme="dark"&gt; 
+        /* This style will be rendered when the theme is set to 'dark' */
+            div\{
+                background-color: black;
+            }
+            h1\{
+                color: white;
+            }
+        &lt;/style&gt;
+        &lt;style theme="dim"&gt; 
+        /* This style will be rendered when the theme is set to 'dim' */
+            div\{
+                background-color: rgb(52, 74, 87);
+            }
+            h1\{
+                color: white;
+            }
+        &lt;/style&gt;
+        </code></pre>
+
+    </section>
+    <section title="nijor/theme">
+        The "nijor/theme" module imports 2 functions :
+        <pre><code>
+        import \{ autoTheme } from 'nijor/theme';
+        autoTheme(); // Use this in the App.nijor file 
+        /* autoTheme() automatically handles dark mode for the website.
+        If the browser's mode is dark mode, it applies the styles specified in &lt;style theme="dark"&gt;*/
+        </code></pre>
+
+        <pre><code>
+        import \{ setTheme } from 'nijor/theme';
+
+        setTheme('dark'); // Applies the styles specified in &lt;style theme="dark"&gt;
+        setTheme('light'); // Applies the styles specified in &lt;style theme="light"&gt;
+        setTheme('cherry'); // Applies the styles specified in &lt;style theme="cherry"&gt;
+        
+        /* Once you manually set a theme, the autoTheme() function stops working */
+        setTheme('auto'); // Resets the theme ; autoTheme() works again as expected
+
+        /* In order to get the current theme */
+        const theme = window.localStorage.getItem('theme'); // Returns 'auto' if theme hasn't been set yet.
+        </code></pre>
+    </section>
+</template>
+<script defer>
+    hljs.highlightAll();
+</script>

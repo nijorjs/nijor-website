@@ -1,9 +1,9 @@
 <links n:imported="components/faq/links-index"/>
-<template>
+<body>
     <div class="main" id="blog-sidenav">
         <links></links>
     </div>
-</template>
+</body>
 <style>
     .main{
         width: 20%;

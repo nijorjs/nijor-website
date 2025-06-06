@@ -1,0 +1,49 @@
+<section n:imported="components/docs/section"/>
+<highlight n:imported="components/docs/highlight"/>
+<body>
+    <section title="Style Modules">
+        Nijor's style modules feature, inspired by Tailwind CSS, allows you to store CSS files in the src/style/modules/ directory. You can apply styles from these files to any HTML tag using the n:style attribute, which includes only the specified classes in the final CSS file. Through treeshaking, unused classes and animations from the directory are removed, ensuring the CSS remains lightweight and efficient.
+    </section>
+    <section title="Example :">
+        <pre><code lang="css">
+        /* src/styles/modules/container.css */
+        .container \{
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .flex \{
+        display: flex;
+        }
+
+        .flex-col \{
+        flex-direction: column;
+        }
+        </code></pre>
+        <pre><code lang="css">
+        /* src/styles/modules/text.css */
+        .bold \{
+            font-weight: bold;  
+        }
+        .light \{
+            letter-spacing: 5px;
+            font-weight: 400;  
+        }
+        </code></pre>
+        <pre><code lang="html">
+        &lt;!-- Some random Nijor component or page --&gt;
+        &lt;body&gt;
+            &lt;div n:style="container flex"&gt;
+                &lt;h1 n:style="light"&gt;Nijor is Awesome !&lt;/h1&gt;
+            &lt;/div&gt;
+        &lt;/body&gt;
+        </code></pre>
+        In the final css file, 'container', 'flex', 'light' classes will be added and the remaining css code inside the 'src/styles/modules' files will be ignored.
+    </section>
+</body>
+<script defer>
+    hljs.highlightAll();
+</script>

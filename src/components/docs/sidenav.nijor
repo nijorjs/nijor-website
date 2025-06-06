@@ -1,12 +1,12 @@
 <links n:imported="components/docs/links-index"/>
-<template>
+<body>
     <div class="main" id="docs-sidenav">
         <links></links>
     </div>
-</template>
+</body>
 <style>
     .main{
-        width: 25%;
+        width: 20%;
         height: calc(100vh - 5rem);
         background-color: rgb(29, 41, 48);
         overflow: hidden;

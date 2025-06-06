@@ -1,7 +1,8 @@
-<template specs={_text_,link}>
+<body specs={_text_,link}>
     <span class="highlight-text" on:click="Route('{link || 'nolink'}')">{_text_}</span>
-</template>
+</body>
 <script>
+    import {dispatchEvent} from "nijor";
     function Route(link){
         if(link!="nolink"){
             if(link.startsWith("https://")){
@@ -9,7 +10,7 @@
                 return;
             }
             window.nijor.redirect(link);
-            window.nijor.emitEvent('navigate');
+            dispatchEvent('navigate');
         }
     }
 </script>

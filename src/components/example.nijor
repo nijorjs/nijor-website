@@ -1,11 +1,11 @@
-<template specs={title,desc,link}>
+<body specs={title,desc,link}>
     <a n:route="{link}">
         <div>
             <h1 class="title">{title}</h1>
             <p>{desc}</p>
         </div>
     </a>
-</template>
+</body>
 <style>
     div{
         max-width: 600px;

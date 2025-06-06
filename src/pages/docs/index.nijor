@@ -1,6 +1,6 @@
 <section n:imported="components/docs/section"/>
 <highlight n:imported="components/docs/highlight"/>
-<template>
+<body>
     <section title="What is Nijor ?">
         Nijor is a component-based framework that allows developers to build websites with ease by breaking down the code into many small components which can be reused throughout the codebase. Thus, Nijor makes developement faster in comparison to plain HTML, CSS and JS. <br>
         Nijor compiles down to browser readable code with the help of the <highlight>nijor compiler</highlight>.
@@ -16,4 +16,4 @@
     <section title="Prerequisites">
         You need to have some basic knowledge about HTML, CSS and Javascript. You need to have Node.js installed on your computer before using Nijor although you don't need to know anything about NodeJS.
     </section>
-</template>
+</body>

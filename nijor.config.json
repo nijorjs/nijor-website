@@ -9,10 +9,13 @@
         "output":"assets/modules"
     },
     "styles":{
-        "input":"src/styles/style.scss",
-        "output":"assets/style.css"
+        "input":"src/styles/style.css",
+        "output":"assets/style.css",
+        "modules":"src/styles/modules"
+
     },
     "server":{
-        "port":3000
+        "port":3000,
+        "live_reload":true
     }
 }

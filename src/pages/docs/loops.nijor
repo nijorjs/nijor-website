@@ -1,0 +1,61 @@
+<section n:imported="components/docs/section"/>
+<highlight n:imported="components/docs/highlight"/>
+<body>
+    <section title="Loops">
+        We can use the <highlight>n:for</highlight> attribute to render a list of items based on an array.
+        This attribute requires a special syntax in the form of <highlight>item in items</highlight>, where items is the source data array and item is an alias for the array element being iterated on:
+        
+        <pre><code>
+        &lt;body&gt;
+
+            &lt;h1&gt;Shopping List :&lt;h1&gt;
+            &lt;div n:for="i in cart"&gt;
+                &lt;p&gt;\{i}&lt;/p&gt;&lt;br&gt;
+            &lt;/div&gt;
+
+        &lt;/body&gt;
+
+        &lt;script&gt;
+            let cart = ['Eggs','Olive Oil','Coconut','Chicken'];
+        &lt;/script&gt;
+        </code></pre>
+
+    </section>
+
+    <section title="n:reload">
+        To reload the list, we can use <highlight>n:reload</highlight> attribute in the same tag with <highlight>n:for</highlight> and give it a unique value. Unique value is important as the loop can be reloaded from any file/component.<br>
+        The reload function is used to reload those lists/async-loader(s) whose n:reload value matches the value passed inside the function.<br>
+
+        <pre><code>
+        &lt;body&gt;
+
+            &lt;input type="text" id="newItem"&gt;
+            &lt;input type="button" on:click="AddItem()" placeholder="What item to add ?"&gt;
+
+            &lt;h1&gt;Shopping List :&lt;h1&gt;
+            &lt;div n:for="i in cart" n:reload="cart"&gt;
+                &lt;p&gt;\{i}&lt;/p&gt;&lt;br&gt;
+            &lt;/div&gt;
+
+        &lt;/body&gt;
+
+        &lt;script&gt;
+
+            import \{reload} from "nijor";
+
+                let cart = ['Eggs','Olive Oil','Coconut','Chicken'];
+
+            function AddItem()\{
+                let item = document.getElementById('newItem').value;
+                cart.push(item);
+                reload('cart'); // Reload the list/async-loader with n:reload="cart"
+            }
+
+        &lt;/script&gt;
+        </code></pre>
+        
+    </section>
+</body>
+<script defer>
+    hljs.highlightAll();
+</script>

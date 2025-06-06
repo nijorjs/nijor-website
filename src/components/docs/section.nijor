@@ -1,10 +1,10 @@
-<template specs={title,_text_}>
+<body specs={title,_text_}>
     <div class="section">
         <h1>{ title }</h1>
         <p>{_text_ || ''}</p>
         <div class="border"></div>
     </div>
-</template>
+</body>
 <style>
     .section{
         width: 100%;

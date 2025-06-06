@@ -1,12 +1,13 @@
 import "nijor";
+import {dispatchEvent} from "nijor";
 import "nijor/router";
-import "nijor/theme"
+import {autoTheme} from  "nijor/theme";
 import App from 'App.nijor';
 
 //@Routes()
 
 App.init('app');
-App.run();
-let url = window.location.pathname;
-window.nijor.renderRoute(url);
-setTimeout(()=>window.nijor.emitEvent('route',window.location.pathname),1);
+(async ()=>await App.run())();
+autoTheme();
+window.nijor.renderRoute(window.location.pathname);
+setTimeout(()=>dispatchEvent('route',window.location.pathname),100);

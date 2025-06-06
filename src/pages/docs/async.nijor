@@ -1,0 +1,96 @@
+<section n:imported="components/docs/section"/>
+<highlight n:imported="components/docs/highlight"/>
+<body>
+    <section title="Async Loading of data">
+        We can load data from server ascychronously using the following syntax.
+        <pre><code>
+        &lt;body&gt;
+            &lt;div n:async&gt;
+                &lt;n:data fetch="data:func()"&gt; &lt;!-- 'data' is the variable that is retured from the async function 'func'--&gt;
+                    &lt;!--This section gets rendered when the data is loaded--&gt;
+                &lt;/n:data&gt;
+                &lt;n:loading&gt;
+                    &lt;!--This section gets rendered when the data is being loaded--&gt;
+                &lt;/n:loading&gt;
+                &lt;n:error catch="error"&gt; &lt;!--You can use the value of catch attribute as a variable inside the n:error block--&gt;
+                    &lt;!--This section gets rendered if there is an error in the 'func' function--&gt;
+                &lt;/n:error&gt;
+            &lt;/div&gt;
+        &lt;/body&gt;
+
+        &lt;script&gt;
+        async function func() \{
+            // .....
+            // This function should always be an async function
+        }
+        &lt;/script&gt;
+        </code></pre>
+    </section>
+
+    <section title="Example">
+        <pre><code>
+        &lt;body&gt;
+            &lt;div n:async&gt;
+                &lt;n:data fetch="planet:getPlanet()"&gt;
+                    &lt;p&gt;\{planet}&lt;/p&gt;
+                &lt;/n:data&gt;
+                &lt;n:loading&gt;
+                    &lt;p&gt;Loading...&lt;/p&gt;
+                &lt;/n:loading&gt;
+                &lt;n:error catch="error"&gt;
+                    &lt;p&gt;\{error}&lt;/p&gt;
+                &lt;/n:error&gt;
+            &lt;/div&gt;
+        &lt;/body&gt;
+
+        &lt;script&gt;
+        async function getPlanet() \{
+            const id = Math.floor(Math.random() * 60) + 1;
+            const response = await fetch(`https://swapi.tech/tech/planets/\$\{id}`);
+            const data = await response.json();
+            return data.name;
+        }
+        &lt;/script&gt;
+        </code></pre>
+    </section>
+    
+    <section title="n:reload">
+        To reload the async-loader, we can use <highlight>n:reload</highlight> attribute in the same tag with <highlight>n:for</highlight> and give it a unique value. Unique value is important as the loop can be reloaded from any file/component.<br>
+        The reload function is used to reload those lists/async-loader(s) whose n:reload value matches the value passed inside the function.<br>
+        <pre><code>
+        &lt;body&gt;
+            &lt;div n:async&gt;
+                &lt;n:data fetch="planet:getPlanet()" n:reload="randomPlanet"&gt;
+                    &lt;p&gt;\{planet}&lt;/p&gt;
+                &lt;/n:data&gt;
+                &lt;n:loading&gt;
+                    &lt;p&gt;Loading...&lt;/p&gt;
+                &lt;/n:loading&gt;
+                &lt;n:error catch="error"&gt;
+                    &lt;p&gt;\{error}&lt;/p&gt;
+                &lt;/n:error&gt;
+            &lt;/div&gt;
+            &lt;button on:click="click()"&gt;Explore the next planet&lt;/button&gt;
+        &lt;/body&gt;
+
+        &lt;script&gt;
+
+        import \{reload} from "nijor";
+
+	    function click()\{
+            reload('randomPlanet'); // Reload the list/async-loader with n:reload="randomPlanet"
+        }
+
+        async function getPlanet() \{
+            const id = Math.floor(Math.random() * 60) + 1;
+            const response = await fetch(`https://swapi.tech/tech/planets/\$\{id}`);
+            const data = await response.json();
+            return data.name;
+        }
+        &lt;/script&gt;
+        </code></pre>
+    </section>
+</body>
+<script defer>
+    hljs.highlightAll();
+</script>

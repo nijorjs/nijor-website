@@ -1,6 +1,6 @@
 <section n:imported="components/docs/section"/>
 <highlight n:imported="components/docs/highlight"/>
-<template>
+<body>
     <div class="container">
         <section title="Namaskar 🙏">
         Hi ! I'm Debarshi Pathak (alias <highlight link="https://twitter.com/DebAxom">DebAxom</highlight>), the creator of Nijor. <br>
@@ -18,7 +18,7 @@
         At last, I'd like to thank the Svelte creator Rich-Harris for creating Rollup JS as without Rollup it'd have been impossible for me to create the Nijor compiler.
         </section>
     </div>
-</template>
+</body>
 <style>
     .container{
         padding: 0.5rem;

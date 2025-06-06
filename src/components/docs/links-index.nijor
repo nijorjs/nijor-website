@@ -1,19 +1,17 @@
-<template>
+<body>
     <ul on:navigate="ChangeRoute(this)" on:route="ChangeRoute(this,$data)">
         <li><a class="nav-link-docs" n:route="/docs">Introduction</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/installation">Installation</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/nijor-cli">Nijor-CLI</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/structure">Project Structure</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/setup">Setup</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/cli">CLI</a></li>
         <li><a class="nav-link-docs" n:route="/docs/components">Components</a></li>
         <li><a class="nav-link-docs" n:route="/docs/routing">Routing</a></li>
         <li><a class="nav-link-docs" n:route="/docs/custom-events">Custom Events</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/functional-attributes">Functional Attributes</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/reactivity">Reactivity</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/code-splitting">Code Splitting</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/dark-mode">Dark Mode</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/examples">Examples</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/loops">Loops</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/async">Async Load</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/themes">Themes</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/style-modules">Style Modules</a></li>
     </ul>
-</template>
+</body>
 <style>
     ul{
         list-style: none;

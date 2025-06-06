@@ -1,12 +1,12 @@
 <sidenav n:imported="components/docs/sidenav"/>
 <mobilenav n:imported="components/docs/sidenav-mobile"/>
-<template>
+<body>
     <div class="container">
         <sidenav></sidenav>
         <mobilenav></mobilenav>
         <div class="docs-div" n:slot></div>
     </div>
-</template>
+</body>
 <style>
     .container{
         width: 100%;
@@ -16,7 +16,7 @@
     }
     .docs-div{
         padding: 1rem;
-        width: 75%;
+        width: 80%;
         height: calc(100vh - 5rem);
         overflow-x: hidden;
         overflow-y: auto;
