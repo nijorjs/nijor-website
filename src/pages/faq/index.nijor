@@ -15,7 +15,7 @@
         
         Nijor is not a perfect framework ; just like everything in this world, Nijor too has it's flaws and it might be confusing at times. <br><br>
         
-        At last, I'd like to thank the Svelte creator Rich-Harris for creating Rollup JS as without Rollup it'd have been impossible for me to create the Nijor compiler.
+        At last, I'd like to thank the Svelte creator Rich-Harris for creating Rollup JS as without Rollup it'd have been impossible for me to create the Nijor compiler. And I'd also thank Evan You for creating Rolldown JS and as Nijor has moved to Rolldown since June 2025 for faster performance.
         </section>
     </div>
 </body>

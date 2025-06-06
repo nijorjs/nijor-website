@@ -2,8 +2,7 @@
     <ul on:navigate="ChangeRoute(this)" on:route="ChangeRoute(this,$data)">
         <li><a class="nav-link-faq" n:route="/faq">A Note from the Creator</a></li>
         <li><a class="nav-link-faq" n:route="/faq/How-Nijor-Works">How Nijor Works ?</a></li>
-        <li><a class="nav-link-faq" n:route="/faq/virtual-dom">Does Nijor have a Virtial DOM ?</a></li>
-        <li><a class="nav-link-faq" n:route="/faq/How-Scoped-CSS-Works">How Scoped CSS Work ?</a></li>        
+        <li><a class="nav-link-faq" n:route="/faq/virtual-dom">Does Nijor have a Virtial DOM ?</a></li>    
     </ul>
 </body>
 <style>
