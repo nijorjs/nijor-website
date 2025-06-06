@@ -1,3 +1,4 @@
 build/
-assets/
+assets/modules/
+assets/style.css
 build.sh
