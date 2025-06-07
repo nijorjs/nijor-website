@@ -72,9 +72,17 @@
     function ChangeTheme(){
         document.body.style.transition = "0.5s";
         let Theme = window.localStorage.getItem('theme');
+
         if(Theme==="auto" || Theme===null) {
             let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (isDarkMode) document.body.setAttribute('theme', 'dark');
+
+            if (isDarkMode) {
+                setTheme('light');
+                return;
+            }
+
+            setTheme('dark');
+            return;
         }
         if(Theme==="dark") setTheme("light");
         if(Theme==="light") setTheme("dark");
