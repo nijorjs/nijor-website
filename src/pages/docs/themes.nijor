@@ -72,6 +72,7 @@
         const theme = window.localStorage.getItem('theme'); // Returns 'auto' if theme hasn't been set yet.
         </code></pre>
     </section>
+</body>
 </template>
 <script defer>
     hljs.highlightAll();

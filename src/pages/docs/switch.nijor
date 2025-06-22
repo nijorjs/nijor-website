@@ -1,0 +1,54 @@
+<section n:imported="components/docs/section"/>
+<highlight n:imported="components/docs/highlight"/>
+<body>
+    <section title="Switch & Show">
+        Switch & Show helps us conditionally render components in Nijor which depends on reactive-variables. Let's understand with the help of an example.
+
+        <pre><code>
+            &lt;body&gt;
+                &lt;p&gt;Age is \{@age}&lt;/p&gt;
+
+                &lt;div&gt;
+                    &lt;button on:click="Decrement()"&gt;-&lt;/button&gt;
+                    &lt;button on:click="ResetCount()"&gt;Reset&lt;/button&gt;
+                    &lt;button on:click="Increment()"&gt;+&lt;/button&gt;
+                &lt;/div&gt;
+                
+                &lt;p n:switch="@age"&gt; &lt;!-- This tells the compiler to rerender this section whenever @age changes. --&gt;
+                    &lt;n:show when="@age >= 18"&gt;You are eligible to drive !&lt;/n:show&gt;
+                    &lt;n:show when="@age < 18"&gt;You are not eligible to drive !&lt;/n:show&gt;
+                &lt;/p&gt;
+
+            &lt;body&gt;
+            &lt;script&gt;
+                const @age = 0;
+            &lt;/script&gt;
+        </code></pre>
+
+        You can put components inside the <highlight>n:show</highlight> blocks. But can't put any loops or async-loads. If you want to use them, then write the loops or async-loads in different components and then call them inside the n:show blocks.
+
+        <pre><code>
+            &lt;dashboard n:imported="....." /&gt;
+            &lt;loginpage n:imported="....." /&gt;
+
+            &lt;body&gt;
+                &lt;div n:switch="@loggedin"&gt;
+                    &lt;n:show when="@loggedin == true"&gt;
+                        &lt;dashboard&gt;
+                    &lt;/n:show&gt;
+                    &lt;n:show when="@loggedin == false"&gt;
+                        &lt;loginpage&gt;
+                    &lt;/n:show&gt;
+                &lt;/div&gt;
+            &lt;body&gt;
+            
+            &lt;script&gt;
+                import \{ @loggedin } from '.....';
+            &lt;/script&gt;
+        </code></pre>
+
+    </section>
+</body>
+<script defer>
+    hljs.highlightAll();
+</script>

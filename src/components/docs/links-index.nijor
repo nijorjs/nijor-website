@@ -8,6 +8,8 @@
         <li><a class="nav-link-docs" n:route="/docs/custom-events">Custom Events</a></li>
         <li><a class="nav-link-docs" n:route="/docs/loops">Loops</a></li>
         <li><a class="nav-link-docs" n:route="/docs/async">Async Load</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/reactivity">Reactivity</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/switch">Switch Show</a></li>
         <li><a class="nav-link-docs" n:route="/docs/themes">Themes</a></li>
         <li><a class="nav-link-docs" n:route="/docs/style-modules">Style Modules</a></li>
     </ul>

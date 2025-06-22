@@ -1,8 +1,6 @@
 <section n:imported="components/docs/section" />
 <highlight n:imported="components/docs/highlight" />
-
 <body>
-
     <section title="Components">
         In Nijor projects, we don't write code in HTML files ; we write code in <highlight>*.nijor</highlight> files
         instead. Each <highlight>*.nijor</highlight> file is a component in a Nijor Project. <br>
@@ -179,8 +177,8 @@
         &lt;/body&gt;
         </code></pre>
     </section>
-    
 </body>
+
 <script defer>
     hljs.highlightAll();
 </script>
