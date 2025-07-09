@@ -15,7 +15,6 @@
         flex-direction: row;
     }
     .docs-div{
-        padding: 1rem;
         width: 80%;
         height: calc(100vh - 5rem);
         overflow-x: hidden;

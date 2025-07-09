@@ -1,7 +1,6 @@
 <section n:imported="components/docs/section"/>
 <highlight n:imported="components/docs/highlight"/>
 <body>
-    <div style="display:none;"></div>
     <section title="CLI">
         The Nijor CLI (Command Line Interface) is a powerful tool that allows you to create, manage, and build Nijor projects directly from your terminal.
         The CLI is designed to be user-friendly and efficient, enabling developers to quickly set up new projects, compile code, and run development servers without the need for complex configurations.
@@ -27,6 +26,9 @@
         <pre><code lang="bash">nijor build</code></pre>
     </section>
 </body>
+<script>
+    import hljs from 'scripts/highlight.js';
+</script>
 <script defer>
     hljs.highlightAll();
 </script>

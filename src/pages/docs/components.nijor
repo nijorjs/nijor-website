@@ -12,7 +12,7 @@
     </section>
 
     <section title="Structure of a Nijor Component">
-        <pre><code>
+        <pre><code lang="html">
         &lt;body&gt;
             &lt;!-- Your HTML goes here --&gt;
         &lt;/body&gt;
@@ -24,10 +24,10 @@
         &lt;/script&gt;
         </code></pre>
 
-        There are 3 types of script tag in a Nijor component. It is not neccessary to use all of them in a single
-        project.
-        <pre><code>
-        &lt;body specs=\{name}&gt;
+        There are 2 types of script tag in a Nijor component. It is not neccessary to use both of them in a single component.
+        
+        <pre><code lang="html">
+        &lt;body props="\{name}"&gt;
             &lt;p&gt;Hello \{name} !&lt;/p&gt;
         &lt;/body&gt;
         &lt;script&gt;
@@ -35,11 +35,6 @@
             // console.log(name); // Will result in error as this code gets executed before the component even renders.
             // Variables defined here can be read inside the body tag using \{variable} syntax
             // Used for defining functions which get executed on events like on:click, on:customevent, onclick, etc
-        &lt;/script&gt;
-        &lt;script mid&gt;
-            /* Very similar to the script tag above but with a slight difference; this script is scoped within the component itself.
-            console.log(name); // Won't result in error as this code gets executed after the component renders.
-            // Variables defined here can be read inside the body tag using \{variable} syntax
         &lt;/script&gt;
         &lt;script defer&gt;
             // Code will get executed after the component Renders.
@@ -49,13 +44,14 @@
         </code></pre>
     </section>
 
-    <section title="Specs Attribute">
-        <highlight>specs</highlight> is a special attribute available in the <highlight>body</highlight> tag . The specs
+    <section title="props Attribute">
+        <highlight>props</highlight> is a special attribute available in the <highlight>body</highlight> tag . The props
         attribute contains an object of all the custom attributes passed to the component from another component.
-        <highlight>_text_</highlight> is a property in the specs object which returns the <highlight>innerHTML
-        </highlight> of the component when imported by another component.
-        <pre><code>
-        &lt;body specs=\{attr1,attr2}&gt;
+        <highlight>_text_</highlight> is a property in the props object which returns the <highlight>innerHTML
+        </highlight> of the component when imported by another component. If the component is a page, we've to use <highlight>params</highlight> instead of <highlight>props</highlight>.
+        
+        <pre><code lang="html">
+        &lt;body props="\{attr1,attr2}"&gt;
             Attribute1 : \{attr1}&lt;br&gt;
             Attribute2 : \{attr2}&lt;br&gt;
         &lt;/body&gt;
@@ -64,8 +60,8 @@
         &lt;/script&gt;
         </code></pre>
         or
-        <pre><code>
-        &lt;body specs=\attrs&gt;
+        <pre><code lang="html">
+        &lt;body props="attrs"&gt;
             Attribute1 : \{attrs.attr1}&lt;br&gt;
             Attribute2 : \{attrs.attr2}&lt;br&gt;
         &lt;/body&gt;
@@ -78,7 +74,7 @@
     <section title="Template string">
         Inside the body tag, you can use the value of a JS variable of the same component inside any HTML tag by
         enclosing the name of the variable by curly brackets.
-        <pre><code>
+        <pre><code lang="html">
         &lt;body&gt;
             Hi! my name is \{name}. &lt;br&gt;
             If you just want to just enclose some text within curly brackets, use \\\(escape-sequence).
@@ -96,7 +92,7 @@
     <section title="Calling events">
         In Nijor, instead of calling events like <highlight>onclick</highlight>, <highlight>onload</highlight>, etc we
         use events like <highlight>on:click</highlight>, <highlight>on:load</highlight>, etc.
-        <pre><code>
+        <pre><code lang="html">
         &lt;body&gt;
             &lt;input type="number" id="num"&gt;
             &lt;button on:click="calc()"&gt;Click Me !&lt;/button&gt;
@@ -119,26 +115,8 @@
         Let's assume that there is a component blogpost.nijor in the <highlight>components/</highlight> directory. We
         can import it any Nijor file by the following syntax.
 
-        <pre><code>
-        &lt;body&gt;
-            &lt;blogpost title="Nijor : A first look"&gt;Nijor is a modern framework for building modern apps .....&lt;/blogpost&gt;
-        &lt;/body&gt;
-        &lt;script&gt;
-            import $BlogPost from 'components/blogpost.nijor'; // Import the component
-        &lt;/script&gt;
-        &lt;script defer&gt;
-            $BlogPost.init('blogpost'); // We have to initialize the component by the name which we're using to call it from inside the body tag.
-            $BlogPost.run(); // Calling this function will render the component.
-            /* 
-            In our case, we are calling our component as &lt;blogpost&gt;....&lt;/blogpost&gt;. So we wrote $BlogPost.init('blogpost');
-            Had we call it as &lt;post&gt;....&lt;/post&gt;, we'd have writen $BlogPost.init('post'); instead of $BlogPost.init('blogpost');
-            */
-        &lt;/script&gt;
-        </code></pre>
-        Importing a component seems to be a very tedious task, but luckly for developers, Nijor has a much more
-        beautiful syntax in which you don't need to initilaize and run the component manually.
-        <pre><code>
-        &lt;blogpost n:imported="components/blogpost"/&gt; &lt;!-- This syntax handles the init and run methods automatically --&gt;
+        <pre><code lang="html">
+        &lt;blogpost n:imported="components/blogpost"/&gt;
         &lt;body&gt;
             &lt;blogpost title="Nijor : A first look"&gt;Nijor is a modern framework for building modern apps .....&lt;/blogpost&gt;
         &lt;/body&gt;
@@ -148,8 +126,8 @@
     <section title="Example :">
         <p>File : src/components/greet.nijor</p>
         
-        <pre><code lang="html" file="src/components/greet.nijor">
-        &lt;body specs=\{name,_text_}&gt;
+        <pre><code lang="html">
+        &lt;body props="\{name,_text_}"&gt;
             &lt;div&gt;
                 &lt;h1&gt;Hello \{name}&lt;/h1&gt;
                 &lt;p&gt;\{_text_}&lt;/p&gt;
@@ -179,6 +157,9 @@
     </section>
 </body>
 
+<script>
+    import hljs from 'scripts/highlight.js';
+</script>
 <script defer>
     hljs.highlightAll();
 </script>

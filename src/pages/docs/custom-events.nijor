@@ -7,7 +7,7 @@
         Let's consider a component <highlight>msg.nijor</highlight> which uses a custom event <highlight>on:msg</highlight>. Whenever a message is send from the <highlight>send.nijor</highlight>, the sender's name and message gets printed in the paragraph tag. <br><br>
         
         <p>File : src/page/msg.nijor</p>
-        <pre><code>
+        <pre><code lang="html">
             &lt;body&gt;
                 &lt;div&gt;
                     &lt;p id="msg" on:msg="PrintMsg($data)"&gt;
@@ -25,7 +25,7 @@
         </code></pre>
 
         <p>File : src/page/send.nijor</p>
-        <pre><code>
+        <pre><code lang="html">
             &lt;body&gt;
                 &lt;div&gt;
                     &lt;input id="name"&gt;
@@ -50,6 +50,9 @@
         </code></pre>
     </section>
 </body>
+<script>
+    import hljs from 'scripts/highlight.js';
+</script>
 <script defer>
     hljs.highlightAll();
 </script>

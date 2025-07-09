@@ -1,0 +1,28 @@
+<body>
+    <div class="container" n:slot></div>
+</body>
+<style>
+    .container{
+        width: 100%;
+        height: calc(100vh - 5rem);
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .container::-webkit-scrollbar{
+        background-color: rgb(218, 214, 214);
+        width:8px;
+    }
+    .container::-webkit-scrollbar-thumb{
+        background-color: rgb(233, 232, 232);
+        width:8px;
+        height:8px;
+    }
+    .container::-webkit-scrollbar-thumb:hover,.container::-webkit-scrollbar-thumb:active{
+        background-color: #0099ff;
+    }
+    @media only screen and (max-width: 600px) {
+        .container{ width : 100%; }
+    }
+</style>

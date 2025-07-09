@@ -1,5 +1,5 @@
 <body>
-    <ul on:navigate="ChangeRoute(this)" on:route="ChangeRoute(this,$data)">
+    <ul on:route="ChangeRoute(this,$data)">
         <li><a class="nav-link-docs" n:route="/docs">Introduction</a></li>
         <li><a class="nav-link-docs" n:route="/docs/setup">Setup</a></li>
         <li><a class="nav-link-docs" n:route="/docs/cli">CLI</a></li>
@@ -7,7 +7,7 @@
         <li><a class="nav-link-docs" n:route="/docs/routing">Routing</a></li>
         <li><a class="nav-link-docs" n:route="/docs/custom-events">Custom Events</a></li>
         <li><a class="nav-link-docs" n:route="/docs/loops">Loops</a></li>
-        <li><a class="nav-link-docs" n:route="/docs/async">Async Load</a></li>
+        <li><a class="nav-link-docs" n:route="/docs/fetch">Fetching data</a></li>
         <li><a class="nav-link-docs" n:route="/docs/reactivity">Reactivity</a></li>
         <li><a class="nav-link-docs" n:route="/docs/switch">Switch Show</a></li>
         <li><a class="nav-link-docs" n:route="/docs/themes">Themes</a></li>
@@ -22,16 +22,27 @@
     li{ margin: 0.5rem 0.5rem; }
     li a{
         padding: 0.5rem;
-        color: rgb(44, 188, 255);
+        color: black;
+    }
+    li a[data-active="true"]{
+        color:#07b0ff;
+    }
+ 
+</style>
+<style theme="dark">
+    li a{
         color: white;
+    }
+    li a[data-active="true"]{
+        color:#07b0ff;
     }
 </style>
 <script>
     function ChangeRoute(_this,route){
         _this.querySelectorAll('.nav-link-docs').forEach(element=>{
-            element.style.color = "white";
+            element.setAttribute('data-active','false')
             if(element.getAttribute('href')===route){
-                element.style.color = "#07b0ff";
+                element.setAttribute('data-active','true');
             }
         });
     }

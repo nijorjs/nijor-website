@@ -43,7 +43,7 @@
 
             import \{reload} from "nijor";
 
-                let cart = ['Eggs','Olive Oil','Coconut','Chicken'];
+            let cart = ['Eggs','Olive Oil','Coconut','Chicken'];
 
             function AddItem()\{
                 let item = document.getElementById('newItem').value;
@@ -56,6 +56,9 @@
         
     </section>
 </body>
+<script>
+    import hljs from 'scripts/highlight.js';
+</script>
 <script defer>
     hljs.highlightAll();
 </script>

@@ -44,6 +44,9 @@
         In the final css file, 'container', 'flex', 'light' classes will be added and the remaining css code inside the 'src/styles/modules' files will be ignored.
     </section>
 </body>
+<script>
+    import hljs from 'scripts/highlight.js';
+</script>
 <script defer>
     hljs.highlightAll();
 </script>

@@ -1,4 +1,4 @@
-<body specs={_text_,link}>
+<body props={_text_,link}>
     <span class="highlight-text" on:click="Route('{link || 'nolink'}')">{_text_}</span>
 </body>
 <script>

@@ -1,0 +1,29 @@
+<body>
+    <div class="main">
+        <h1>Powered By</h1>
+        <div class="list">
+            <p>Rolldown</p>
+            <p>PostCSS</p>
+            <p>JSDOM</p>
+        </div>
+    </div>
+</body>
+<style>
+    .main{
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        background-color: black;
+    }
+    h1{
+        flex-shrink: 0;
+        margin: 1rem;
+        text-align: center;
+        font-weight: 400;
+        font-size: 35px;
+        letter-spacing: 1px;
+    }
+    .list{
+        
+    }
+</style>

@@ -16,6 +16,6 @@
     },
     "server":{
         "port":3000,
-        "live_reload":true
+        "live_reload":false
     }
 }

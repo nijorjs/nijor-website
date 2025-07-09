@@ -1,14 +1,14 @@
-<body specs={title,_text_}>
+<body props={title,_text_}>
     <div class="section">
         <h1>{ title }</h1>
         <p>{_text_ || ''}</p>
-        <div class="border"></div>
     </div>
+    <div class="border"></div>
 </body>
 <style>
     .section{
         width: 100%;
-        padding: 0.5rem;
+        padding: 1.5rem;
     }
     h1{
         font-size: 2.4rem;

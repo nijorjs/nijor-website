@@ -111,6 +111,9 @@
 
 </body>
 
+<script>
+    import hljs from 'scripts/highlight.js';
+</script>
 <script defer>
     hljs.highlightAll();
 </script>

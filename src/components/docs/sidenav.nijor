@@ -8,30 +8,16 @@
     .main{
         width: 20%;
         height: calc(100vh - 5rem);
-        background-color: rgb(29, 41, 48);
+        background-color: rgb(245, 245, 245);
         overflow: hidden;
     }
-    ul{
-        list-style: none;
-        padding: 0.5rem;
-    }
-    li{ margin: 0.5rem 0.5rem; }
-    li a{
-        padding: 0.5rem;
-        color: rgb(44, 188, 255);
-        color: white;
-    }
+
     @media only screen and (max-width: 600px) {
         .main{ display: none;}
     }
 </style>
-<script>
-    function ChangeRoute(_this,route){
-        _this.querySelectorAll('.nav-link-docs').forEach(element=>{
-            element.style.color = "white";
-            if(element.getAttribute('href')===route){
-                element.style.color = "#07b0ff";
-            }
-        });
+<style theme="dark">
+    .main{
+        background-color: rgb(29, 41, 48);
     }
-</script>
+</style>

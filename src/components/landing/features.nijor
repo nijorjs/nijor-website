@@ -1,0 +1,61 @@
+<card n:imported="components/card.nijor" />
+
+<body>
+    <div class="main">
+        <h1>Why use Nijor ?</h1>
+        <div class="cards">
+            <card title="Reusability" icon="reuse">
+                Write your code in reausable components which can be reused multiple times, thus making your code look
+                cleaner, easier to debug and more organized. Write components in *.nijor files.
+            </card>
+            <card title="Scoped CSS" icon="box">
+                CSS inside your components are scoped which means that you don't need to think about your component's
+                css affecting other components or vise-versa. You can write global styles in the style.css file.
+            </card>
+            <card title="Routing" icon="compass">
+                A file-system based client-side router. Works automatically based on your file arrangement. No
+                configuration required ; no extra code needed. Supports parameterized routing.
+            </card>
+            <card title="SSR Support" icon="deploy">
+                SSR in Nijor works a little different than other frameworks. However, it doesn't effect SEO adversely.
+            </card>
+        </div>
+    </div>
+</body>
+
+<style>
+    .main{
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        padding: 0.5rem;
+    }
+    h1{
+        flex-shrink: 0;
+        margin: 1rem;
+        text-align: center;
+        font-weight: 400;
+        font-size: 35px;
+        letter-spacing: 1px;
+    }
+    .cards {
+        padding: 0.5rem;
+        padding-top: 1rem;
+        width: 100%;
+        background-color: transparent;
+        display: flex;
+        flex-direction: row;
+        align-self: center;
+        justify-content: space-evenly;
+        flex-wrap: nowrap;
+        flex-shrink: 0;
+        align-content: center;
+        overflow: hidden;
+    }
+
+    @media only screen and (max-width: 1200px) {
+        .cards {
+            flex-wrap: wrap;
+        }
+    }
+</style>

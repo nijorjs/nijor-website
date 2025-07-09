@@ -32,6 +32,9 @@
         The <highlight>assets/</highlight> directory stores the assets of your project ; the <highlight>assets/modules/</highlight> directory stores all the compiled nijor pages and components. <br>
     </section>
 </body>
+<script>
+    import hljs from 'scripts/highlight.js';
+</script>
 <script defer>
     hljs.highlightAll();
 </script>

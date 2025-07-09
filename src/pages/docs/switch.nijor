@@ -4,7 +4,7 @@
     <section title="Switch & Show">
         Switch & Show helps us conditionally render components in Nijor which depends on reactive-variables. Let's understand with the help of an example.
 
-        <pre><code>
+        <pre><code lang="html">
             &lt;body&gt;
                 &lt;p&gt;Age is \{@age}&lt;/p&gt;
 
@@ -27,7 +27,7 @@
 
         You can put components inside the <highlight>n:show</highlight> blocks. But can't put any loops or async-loads. If you want to use them, then write the loops or async-loads in different components and then call them inside the n:show blocks.
 
-        <pre><code>
+        <pre><code lang="html">
             &lt;dashboard n:imported="....." /&gt;
             &lt;loginpage n:imported="....." /&gt;
 
@@ -49,6 +49,9 @@
 
     </section>
 </body>
+<script>
+    import hljs from 'scripts/highlight.js';
+</script>
 <script defer>
     hljs.highlightAll();
 </script>
