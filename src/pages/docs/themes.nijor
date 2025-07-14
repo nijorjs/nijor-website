@@ -50,7 +50,7 @@
 
     </section>
     <section title="nijor/theme">
-        The "nijor/theme" module imports 2 functions :
+        The "nijor/theme" module exports 2 functions :
         <pre><code>
         import \{ autoTheme } from 'nijor/theme';
         autoTheme(); // Use this in the App.nijor file 
@@ -70,6 +70,22 @@
 
         /* In order to get the current theme */
         const theme = window.localStorage.getItem('theme'); // Returns 'auto' if theme hasn't been set yet.
+        </code></pre>
+    </section>
+    <section title="Changes in the App.js file ">
+        <pre><code>
+        import \{ Render } from "nijor";
+        import \{ autoTheme } from "nijor/theme";
+        import "nijor/router";
+        import App from 'App.nijor';
+
+        //@Routes()
+
+        (async()=>\{
+            await Render(App);
+            autoTheme();
+        })();
+
         </code></pre>
     </section>
 </body>
