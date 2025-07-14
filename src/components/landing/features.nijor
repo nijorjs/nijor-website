@@ -1,4 +1,4 @@
-<card n:imported="components/card.nijor" />
+<card n:imported="components/feature-card.nijor" />
 
 <body>
     <div class="main">

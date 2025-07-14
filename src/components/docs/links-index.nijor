@@ -1,5 +1,6 @@
 <body>
-    <ul on:route="ChangeRoute(this,$data)">
+    <ul on:route="ChangeRoute(this, $data)" nfor="link in Links">
+        <!-- <li><a class="nav-link-docs" n:route="{link.url}">{link.title}</a></li> -->
         <li><a class="nav-link-docs" n:route="/docs">Introduction</a></li>
         <li><a class="nav-link-docs" n:route="/docs/setup">Setup</a></li>
         <li><a class="nav-link-docs" n:route="/docs/cli">CLI</a></li>
@@ -40,10 +41,25 @@
 <script>
     function ChangeRoute(_this,route){
         _this.querySelectorAll('.nav-link-docs').forEach(element=>{
-            element.setAttribute('data-active','false')
+            element.setAttribute('data-active','false');
             if(element.getAttribute('href')===route){
                 element.setAttribute('data-active','true');
             }
         });
     }
+
+    const Links = [
+        {title: 'Introduction', url : '/docs'},
+        {title: 'Setup', url : '/docs/setup'},
+        {title: 'CLI', url : '/docs/cli'},
+        {title: 'Components', url : '/docs/components'},
+        {title: 'Routing', url : '/docs/routing'},
+        {title: 'Custom Events', url : '/docs/custom-events'},
+        {title: 'Loops', url : '/docs/loops'},
+        {title: 'Data Fetching', url : '/docs/fetch'},
+        {title: 'Reactivity', url : '/docs/reactivity'},
+        {title: 'Switch-Show', url : '/docs/switch'},
+        {title: 'Themes', url: '/docs/themes'},
+        {title: 'Style Modules', url : '/docs/style-modules'}
+    ];
 </script>

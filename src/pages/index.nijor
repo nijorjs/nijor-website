@@ -1,6 +1,7 @@
-<hero n:imported="components/landing/hero.nijor"/>
-<features n:imported="components/landing/features.nijor"/>
+<hero n:imported="components/landing/hero.nijor" />
+<features n:imported="components/landing/features.nijor" />
 <!-- <power n:imported="components/landing/power.nijor"/> -->
+
 <body>
     <div class="main">
         <hero></hero>
@@ -9,7 +10,7 @@
     </div>
 </body>
 <style>
-    .main{
+    .main {
         display: flex;
         flex-direction: column;
         height: calc(100vh - 5rem);
@@ -18,29 +19,32 @@
         overflow-x: hidden;
         overflow-y: auto;
     }
-    
-    .main::-webkit-scrollbar{
-        background-color: transparent;
-        width:8px;
-    }
-    
-    .main::-webkit-scrollbar-thumb{
-        background-color: transparent;
-        width:8px;
-        height:8px;
-    }
 
-    .main::-webkit-scrollbar:hover, .main::-webkit-scrollbar-thumb:hover{
-        background-color: rgba(218, 214, 214, 0.224);
-    }
+    @media only screen and (min-width: 600px) {
 
-    .main::-webkit-scrollbar-thumb:hover,.main::-webkit-scrollbar-thumb:active{
-        background-color: #0099ff;
-    }
+        .main::-webkit-scrollbar {
+            background-color: transparent;
+            width: 8px;
+        }
 
+        .main::-webkit-scrollbar-thumb {
+            background-color: transparent;
+            width: 8px;
+            height: 8px;
+        }
+
+        .main::-webkit-scrollbar:hover,.main::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(218, 214, 214, 0.224);
+        }
+
+        .main::-webkit-scrollbar-thumb:hover,.main::-webkit-scrollbar-thumb:active {
+            background-color: #0099ff;
+        }
+
+    }
 </style>
 <style theme="dark">
-    .main{
+    .main {
         background-color: rgb(22, 32, 37);
     }
 </style>

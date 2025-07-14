@@ -1,5 +1,7 @@
 <header n:imported="components/header"/>
+<sidenav n:imported="components/mobile-sidenav"/>
 <body>
+    <sidenav></sidenav>
     <header></header>
     <div style="margin-top: 5rem;" n:slot></div>
 </body>
