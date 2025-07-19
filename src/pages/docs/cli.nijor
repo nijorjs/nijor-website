@@ -11,9 +11,9 @@
         <pre><code lang="bash">nijor create \{AppName}</code></pre>
         <pre><code lang="bash">cd \{AppName}</code></pre>
     </section>
-    <section title="nijor serve">
-        The <highlight>nijor serve</highlight> command runs a development server for the Nijor Project.
-        <pre><code lang="bash">nijor serve</code></pre>
+    <section title="nijor dev">
+        The <highlight>nijor dev</highlight> command runs a development server for the Nijor Project. If the 'live_reload' option is set to true in the <highlight>nijor.config.json</highlight>, the project will recompile whenever you make changes in the <highlight>src/</highlight> directory.
+        <pre><code lang="bash">nijor dev</code></pre>
     </section>
     <section title="nijor compile">
         The <highlight>nijor compile</highlight> command compiles the all the <highlight>*.nijor</highlight> files to browser readable JS and CSS code.

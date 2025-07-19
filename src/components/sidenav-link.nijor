@@ -25,7 +25,7 @@
     }
 
     .links-div[data-active='false'] .sub-links{ display: none; }
-    .links-div[data-active='false'] .arrow{ transform: rotate(180deg); }
+    .links-div[data-active='true'] .arrow{ transform: rotate(180deg); }
 
 </style>
 <style theme="dark">
