@@ -8,15 +8,13 @@
         <h3>For Linux/Mac</h3>
         <pre><code lang="bash">sudo npm install @nijor/nijor -g</code></pre>
         <h3>For Windows</h3>
-        <p>Not available for Windows as of now. Use Docker.</p><br><br>
-        <!-- <pre><code lang="bash">npm install @nijor/nijor -g</code></pre><br> -->
+        <pre><code lang="bash">npm install @nijor/nijor -g</code></pre><br>
 
         <h3>Using Bun :</h3><br>
         <h3>For Linux/Mac</h3>
         <pre><code lang="bash">sudo bun add @nijor/nijor -g</code></pre>
         <h3>For Windows</h3>
-        <p>Not available for Windows as of now. Use Docker.</p><br><br>
-        <!-- <pre><code lang="bash">bun add @nijor/nijor -g</code></pre><br> -->
+        <pre><code lang="bash">bun add @nijor/nijor -g</code></pre><br>
     </section>
 
     <section title="Project Structure">
