@@ -1,0 +1,70 @@
+<head>
+    <title>Plugins | Nijor</title>
+    <meta name="keywords" content="Plugins in Nijor, Nijor Plugins, Nijor Plugin"/>
+    <meta name="description" content="Learn how plugins work in Nijor and how they let you define custom compile-time behavior."/>
+</head>
+<body layout="docs">
+
+    <section>
+        <h1>Plugins</h1>
+        <p>Plugins in Nijor let you define custom behavior at compile time. Many built-in features such as <span class="txt">n:loop</span>, <span class="txt">on:event</span>, and reactive variables are internally powered by plugins, making Nijor flexible and modular.</p>
+    </section>
+
+    <section>
+        <h1>Using Plugins</h1>
+        <p>Before creating your own plugins, you can use existing ones by importing them into <span class="txt">nijor.config.js</span> and adding them to the <span class="txt">plugins</span> array.</p>
+
+    <code lang="js" shiki>
+        import plugin1 from "@/plugins/plugin1.js"
+        import plugin2 from "@/plugins/plugin2.js"
+
+        export const plugins = [ plugin1(), plugin2() ];
+    </code>
+
+        <p>Nijor will run these plugins during compilation in the order they appear in the array.</p>
+
+    </section>
+    <section>
+        <h1>Plugin Development</h1>
+        <p>A Nijor plugin exports a default async function. This function receives a single object containing <span class="txt">document</span>, <span class="txt">scope</span>, <span class="txt">props</span>, <span class="txt">scripts</span>, <span class="txt">filename</span>, and <span class="txt">module_type</span>.</p>
+
+    <code lang="js" shiki>
+        export async function plugin(properties)\{
+
+            return async function (\{ document, scope, props, scripts, filename, module_type }) \{
+                // Plugin logic
+
+                return \{
+                    name: "Plugin Name",
+                    body: document.body.innerHTML,
+                    ...scripts
+                };
+            }
+        
+        }
+    </code>
+
+        <h1>Plugin Arguments</h1>
+        <p>The plugin function receives the parsed <span class="txt">document</span>, the current <span class="txt">scope</span>, component <span class="txt">props</span>, the generated <span class="txt">scripts</span> object, the current <span class="txt">filename</span>, and the <span class="txt">module_type</span>.</p>
+        <p>The <span class="txt">module_type</span> can be component, layout, page.</p>
+        <p>The <span class="txt">scope</span> is a random string unique to a particular component, layout or page.</p>
+        <p>The <span class="txt">scripts</span> object contains three properties: <span class="txt">main</span>, <span class="txt">global</span>, and <span class="txt">defer</span>.</p>
+        <p>Do not overwrite <span class="txt">scripts.main</span> directly unless absolutely necessary. Prefer appending to it instead :</p>
+    <code lang="js" shiki>
+        scripts.main += "// additional code"
+    </code>
+
+        <p>Since these fields contain generated script code, replacing them carelessly may break compilation output.</p>
+
+        <h2>Internal Compilation</h2>
+        <p>Internally, a <span class="txt">.nijor</span> file is compiled into a structure similar to this:</p>
+
+    <code lang="js" shiki>
+        // scripts.global
+        const x = new component(templateFn, callbackFn);
+    </code>
+
+        <p><span class="txt">scripts.global</span> contains top-level code such as component initialization. <span class="txt">templateFn</span> returns the template output. Code written inside the <span class="txt">&lt;script&gt;</span> tag is placed inside <span class="txt">templateFn</span>, except for imports, which are moved to the top level. <span class="txt">callbackFn</span> runs immediately after <span class="txt">templateFn</span> renders the template, including child component rendering. <span class="txt">scripts.defer</span> is injected inside <span class="txt">templateFn</span>.</p>
+
+    </section>
+</body>

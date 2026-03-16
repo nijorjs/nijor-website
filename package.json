@@ -1,23 +1,7 @@
 {
-  "name": "Nijor Docs",
-  "version": "1.0.0",
-  "description": "Docs for NijorJS",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nijorjs/nijor-website.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nijorjs/nijor-website/issues"
-  },
-  "homepage": "https://github.com/nijorjs/nijor-website#readme",
+  "type": "module",
+  "private": true,
   "dependencies": {
-    "highlight.js": "^11.11.1"
+    "shiki": "^4.0.1"
   }
 }

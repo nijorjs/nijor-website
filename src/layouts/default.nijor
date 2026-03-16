@@ -1,0 +1,7 @@
+<import name="footer" source="@/components/footer.nijor"/>
+<body>
+    <div class="slot" style="padding: 0;">
+        <div n:slot></div>
+        <footer></footer>
+    </div>
+</body>

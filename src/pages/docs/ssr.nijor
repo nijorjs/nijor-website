@@ -1,0 +1,26 @@
+<head>
+    <title>Server Side Rendering | Nijor</title>
+    <meta name="description" content="Learn about Server Side Rendering in Nijor.">
+</head>
+
+<body layout="docs">
+    <section>
+        <h1>Server Side Rendering</h1>
+        <p>
+            Nijor supports Server Side Rendering, but the feature is still evolving and is not yet fully mature. <br><br>
+            You can still use SSR by changing the build mode from <span class="txt">spa</span> to <span class="txt">ssr</span> in your <span class="txt">nijor.config.js</span> file.
+        </p>
+
+    <code lang="js" shiki>\
+        export const build = \{
+            mode: "ssr"
+        }
+    </code>
+
+        <p>
+            At the moment, the main issue lies in hydration. The server-rendered HTML is generated correctly, but hydration is not yet working properly in all cases. <br><br>
+            As a temporary workaround, rendered components are rendered again on page load. This means SSR can already be used, but the current behavior is not as efficient or polished as it should be. <br><br>
+            This limitation is known and will be fixed in the future as Nijor’s SSR support continues to improve.
+        </p>
+    </section>
+</body>

@@ -1,0 +1,183 @@
+<head>
+    <title>Styles</title>
+    <meta name="keywords" content="Themes in Nijor, Nijor Themes, Nijor Reactive Classes"/>
+    <meta name="description" content="Styling in Nijor">
+</head>
+
+<body layout="docs">
+
+    <section>
+        <h1>Themes</h1>
+        <p>
+            Dark mode is common in modern applications. While it can be implemented using CSS media queries, that approach only works when the browser or operating system theme is already set to dark.
+        </p>
+        <p>
+            In many applications, users should be able to choose between light mode, dark mode, or automatic mode without changing their browser settings. Nijor provides built-in support for this through theme-aware styles and the <span class="txt">nijor/theme</span> module.
+        </p>
+        <p>
+            In Nijor, themes are defined using the <span class="txt">theme</span> attribute on <span class="txt">style</span> tags.
+            Styles inside an <span class="txt">style</span> block without a <span class="txt">theme</span> attribute are applied for all themes and are generally used as the base or light theme.
+        </p>
+
+    <code lang="html" shiki>
+        <template>
+            <div>
+                <h1>Nomoskar</h1>
+            </div>
+        </template>
+
+        <nstyle>
+            div \{
+                margin: 10px;
+                padding: 10px;
+                background-color: white;
+            }
+
+            h1 \{
+                color: black;
+            }
+        </nstyle>
+
+        <nstyle theme="dark">
+            div \{
+                background-color: black;
+            }
+
+            h1 \{
+                color: white;
+            }
+        </nstyle>
+
+        <nstyle theme="dim">
+            div \{
+                background-color: rgb(52, 74, 87);
+            }
+
+            h1 \{
+                color: white;
+            }
+        </nstyle>
+    </code>
+
+        <p>
+            In this example, the unthemed <span class="txt">style</span> block provides the base styles.
+            The themed style blocks override specific properties when the active theme matches their <span class="txt">theme</span> value.
+        </p>
+        <p>
+            The <span class="txt">nijor/theme</span> module provides functions for handling themes in a Nijor application.
+            It exports two functions: <span class="txt">autoTheme()</span> and <span class="txt">setTheme()</span>.
+        </p>
+
+    <code lang="js" shiki>
+        import \{ autoTheme, setTheme } from "nijor/theme";
+    </code>
+
+        <p>
+            The <span class="txt">autoTheme()</span> function automatically applies the appropriate theme based on the browser or system preference.
+            If the browser is in dark mode, Nijor applies the styles defined in <span class="txt">&lt;style theme="dark"&gt;</span>. If the browser is in light mode, Nijor uses the default styles.
+        </p>
+
+    <code lang="js" shiki>
+        import \{ autoTheme } from "nijor/theme";
+
+        autoTheme();
+    </code>
+
+        <p>
+            The <span class="txt">setTheme()</span> function manually sets the active theme.
+        </p>
+
+    <code lang="js" shiki>
+        import \{ setTheme } from "nijor/theme";
+
+        setTheme("dark");
+        setTheme("light");
+        setTheme("cherry");
+    </code>
+
+        <p>
+            Once a theme is set manually, <span class="txt">autoTheme()</span> no longer controls the theme.
+            To restore automatic theme handling, use <span class="txt">setTheme("auto")</span>.
+        </p>
+
+        <code lang="js" shiki>
+            setTheme("auto");
+        </code>
+
+        <p>
+            The currently selected theme is stored in <span class="txt">localStorage</span>.
+            You can read it using :
+        </p>
+
+    <code lang="js" shiki>
+        const theme = window.localStorage.getItem("theme");
+    </code>
+
+        <p>
+            If no theme has been set manually, this returns <span class="txt">"auto"</span>.
+        </p>
+        <p>
+            Add the following code to <span class="txt">App.js</span>.
+        </p>
+
+    <code lang="js" shiki>
+        import \{ autoTheme } from "nijor/theme";
+        autoTheme();
+    </code>
+    </section>
+
+    <section>
+        <h1>Conditional Classes</h1>
+        <p>
+            Nijor allows classes to be added conditionally using the <span class="txt">class:classname</span> syntax.
+            This syntax is used as an attribute on an element.
+        </p>
+        <p>
+            If the condition is true, the class is added to the element. If the condition is false, the class is not added.
+        </p>
+    <code lang="html" shiki>
+        <template>
+            <button class:active="{isActive}">Save</button>
+        </template>
+
+        <nscript>
+            const isActive = true;
+        </nscript>
+
+        <nstyle>
+            .active\{
+                color : #0099ff;
+            }
+        </nstyle>
+    </code>
+        <p>
+            In this example, the class <span class="txt">active</span> is added only when <span class="txt">isActive</span> is true.
+        </p>
+        <p>
+            This also works with reactive variables.
+        </p>
+    <code lang="html" shiki>
+        <template>
+            <button class:enabled="{$.enabled}" on:click="toggle()">Toggle</button>
+        </template>
+
+        <nscript>
+            $.enabled = false;
+
+            function toggle($) \{
+                $.enabled = !$.enabled;
+            }
+        </nscript>
+
+        <nstyle>
+            .enabled\{
+                color : #0099ff;
+            }
+        </nstyle>
+    </code>
+        <p>
+            Here, the <span class="txt">active</span> class is added and removed automatically as the value of <span class="txt">$.enabled</span> changes.
+        </p>
+    </section>
+
+</body>

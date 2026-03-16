@@ -1,165 +1,121 @@
-<section n:imported="components/docs/section" />
-<highlight n:imported="components/docs/highlight" />
-<body>
-    <section title="Components">
-        In Nijor projects, we don't write code in HTML files ; we write code in <highlight>*.nijor</highlight> files
-        instead. Each <highlight>*.nijor</highlight> file is a component in a Nijor Project. <br>
-        A Nijor Component is a capsule of HTML, CSS and Javascript code in a single file in which the HTML, CSS and JS
-        are scoped which allows developers to name their CSS classes and Javascript functions anyway we like without
-        worrying about messing up with the scopes of other components. <br>
-        A Nijor Component can be used as a custom HTML tag (with custom attributes) by other Nijor Component. It can
-        also be used as a Page for routing.
+<head>
+    <title>Components | Nijor</title>
+    <meta name="keywords" content="Components in Nijor, Nijor Components"/>
+    <meta name="description" content="Components in Nijor">
+</head>
+<body layout="docs">
+
+    <section>
+        <h1>Components</h1>
+        <p>
+            User interfaces in Nijor are built using components. ( You can think of them as custom html tags with custom attributes )
+            A component is defined inside a <span class="txt">.nijor</span> file. Components encapsulate markup, logic, and styles in a single file, making them easy to reuse and maintain.
+        </p>
     </section>
 
-    <section title="Structure of a Nijor Component">
-        <pre><code lang="html">
-        &lt;body&gt;
-            &lt;!-- Your HTML goes here --&gt;
-        &lt;/body&gt;
-        &lt;style&gt;
+    <section>
+        <h1>Structure of a Component</h1>
+    <code lang="html" shiki>
+        <template>
+            <!-- Your HTML goes here -->
+        </template>
+        <nstyle>
             /* Your CSS goes Here */
-        &lt;/style&gt;
-        &lt;script&gt;
+            /* CSS here is scoped ; the styles defined here will only apply to html inside this body tag */
+        </nstyle>
+        <nscript>
             // Your JS goes here
-        &lt;/script&gt;
-        </code></pre>
-
-        There are 2 types of script tag in a Nijor component. It is not neccessary to use both of them in a single component.
-        
-        <pre><code lang="html">
-        &lt;body props="\{name}"&gt;
-            &lt;p&gt;Hello \{name} !&lt;/p&gt;
-        &lt;/body&gt;
-        &lt;script&gt;
-            // Code will get executed before the component Renders. It's code is in the global scope
-            // console.log(name); // Will result in error as this code gets executed before the component even renders.
-            // Variables defined here can be read inside the body tag using \{variable} syntax
-            // Used for defining functions which get executed on events like on:click, on:customevent, onclick, etc
-        &lt;/script&gt;
-        &lt;script defer&gt;
-            // Code will get executed after the component Renders.
-            console.log(name); // Won't result in error as this code gets executed after the component renders.
-            // Variables defined here can't be read inside the body tag using \{variable} syntax
-        &lt;/script&gt;
-        </code></pre>
+        </nscript>
+    </code>
     </section>
 
-    <section title="props Attribute">
-        <highlight>props</highlight> is a special attribute available in the <highlight>body</highlight> tag . The props
-        attribute contains an object of all the custom attributes passed to the component from another component.
-        <highlight>_text_</highlight> is a property in the props object which returns the <highlight>innerHTML
-        </highlight> of the component when imported by another component. If the component is a page, we've to use <highlight>params</highlight> instead of <highlight>props</highlight>.
-        
-        <pre><code lang="html">
-        &lt;body props="\{attr1,attr2}"&gt;
-            Attribute1 : \{attr1}&lt;br&gt;
-            Attribute2 : \{attr2}&lt;br&gt;
-        &lt;/body&gt;
-        &lt;script&gt;
-            console.log(attr1,attr2);
-        &lt;/script&gt;
-        </code></pre>
-        or
-        <pre><code lang="html">
-        &lt;body props="attrs"&gt;
-            Attribute1 : \{attrs.attr1}&lt;br&gt;
-            Attribute2 : \{attrs.attr2}&lt;br&gt;
-        &lt;/body&gt;
-        &lt;script&gt;
-            console.log(attrs.attr1,attrs.attr2);
-        &lt;/script&gt;
-        </code></pre>
+    <section>
+        <h1>Props (Attributes)</h1>
+        <p>
+            Variables declared inside the <span class="txt">script</span> section can be used directly in the template. They are inserted using curly braces. <br>
+            Props are the attributes passed down to our components. Props is actually an object which contains all the attributes passed down from the parent and we can destructure them to make it easy to read. <br>
+            Props are also a type of variable and accessing them in the template is similar to accessing other variables. <span class="txt">props</span> is an attribute of body, and we can access props value inside the script too. <br>
+            <span class="txt">html</span> is a special prop which is the innerHTML of a component being called.
+        </p>
+    <code lang="html" shiki>
+        <template props="\{ name , age }">
+            <h1>Hello { name } !</h1>
+            <p>You are { age } and you are { isEligible } to drive </p>
+        </template>
+        <nscript>
+            const isEligible = parseInt(age) > 18 ? "eligible" : "not eligible";
+        </nscript>
+    </code>
     </section>
 
-    <section title="Template string">
-        Inside the body tag, you can use the value of a JS variable of the same component inside any HTML tag by
-        enclosing the name of the variable by curly brackets.
-        <pre><code lang="html">
-        &lt;body&gt;
-            Hi! my name is \{name}. &lt;br&gt;
-            If you just want to just enclose some text within curly brackets, use \\\(escape-sequence).
-            Example :
-                \\\{name} will just print \{name} not Garuda
-        &lt;/body&gt;
-        &lt;script&gt;
-            let name = "Garuda";
-        &lt;/script&gt;
-        </code></pre>
+    <section>
+        <h1>Event Handling</h1>
+        <p>While working in <span class="txt">.nijor</span> files, inline events are declared using the <span class="txt">on:event</span> syntax. Example : onclick becomes on:click.</p>
+    <code lang="html" shiki>
+        <template>
+            <p id="msg"></p>
+            <button on:click="sayHello()">Click</button>
+        </template>
 
-        You might get an error if you use \{ } inside your body tag as Nijor thinks that the curlybraces are for variable. To avoid it, use \\\{ }
-    </section>
-
-    <section title="Calling events">
-        In Nijor, instead of calling events like <highlight>onclick</highlight>, <highlight>onload</highlight>, etc we
-        use events like <highlight>on:click</highlight>, <highlight>on:load</highlight>, etc.
-        <pre><code lang="html">
-        &lt;body&gt;
-            &lt;input type="number" id="num"&gt;
-            &lt;button on:click="calc()"&gt;Click Me !&lt;/button&gt;
-            &lt;p id="res"&gt;&lt;/p&gt;
-        &lt;/body&gt;
-        &lt;script&gt;
-            function Factorial(n)\{
-                if(n===1 || n===0) return 1;
-                return n * Factorial(n-1);
+        <nscript>
+            function sayHello() \{
+                document.getElementById('msg').innerHTML = "Hello World !";
             }
-            function calc()\{
-                let num = document.getElementById("num").value;
-                document.getElementById("res").innerHTML = `\$\{num}! = \$\{Facrorial(num)}`;
-            }
-        &lt;/script&gt;
-        </code></pre>
+        </nscript>
+    </code>
     </section>
 
-    <section title="Importing a component">
-        Let's assume that there is a component blogpost.nijor in the <highlight>components/</highlight> directory. We
-        can import it any Nijor file by the following syntax.
-
-        <pre><code lang="html">
-        &lt;blogpost n:imported="components/blogpost"/&gt;
-        &lt;body&gt;
-            &lt;blogpost title="Nijor : A first look"&gt;Nijor is a modern framework for building modern apps .....&lt;/blogpost&gt;
-        &lt;/body&gt;
-        </code></pre>
+    <section>
+        <h1>Importing Components</h1>
+        <p>Components are imported using the <span class="txt">import</span> tag outside <span class="txt">body</span>.</p> 
+    <code lang="html" shiki>
+        <import name="..." source="..."/>
+    </code>
+    <p>
+        Component names are case-insensitive just like regular html tags. You can name your component anything. <br>
+        But avoid the following names : <span class="txt">body</span>, <span class="txt">head</span>, <span class="txt">import</span>, <span class="txt">style</span>, <span class="txt">script</span>
+    </p>
     </section>
 
-    <section title="Example :">
-        <p>File : src/components/greet.nijor</p>
-        
-        <pre><code lang="html">
-        &lt;body props="\{name,_text_}"&gt;
-            &lt;div&gt;
-                &lt;h1&gt;Hello \{name}&lt;/h1&gt;
-                &lt;p&gt;\{_text_}&lt;/p&gt;
-            &lt;/div&gt;
-        &lt;/body&gt;
-        &lt;style&gt;
-            div\{
-                padding : 0.5rem;
-                background-color : white;
-            }
-            h1\{
-                color : #0099ff;
-            }
-        &lt;/style&gt;
-        </code></pre>
-        <div style="display:none;"><code></code></div>
+    <section>
+        <h1>Example : Creating & Importing a component</h1>
+    <code lang="html" shiki>
+        <template props="\{ title , html }">
+            <div class="box">
+                <h3>{ title }</h3>
+                <p>{ html }</p>
+                <button on:click="showMessage('{html}')">Show Message</button>
+            </div>
+        </template>
 
-        <p>File : src/pages/chat.nijor</p>
-        <pre><code lang="html">
-        &lt;greet n:imported="components/greet.nijor"/&gt;
-        &lt;!--&lt;greet n:imported="components/greet"/&gt; will also work as the file extension .nijor isn't mandatory while importing components. --&gt;
-        &lt;body&gt;
-            &lt;greet name="Vasudev"&gt;How are you bro !&lt;/greet&gt;
-            &lt;greet name="Ruda"&gt;Long time no see !&lt;/greet&gt;
-        &lt;/body&gt;
-        </code></pre>
+        <nscript>
+            function showMessage(msg) \{
+                alert(msg);
+            }
+        </nscript>
+
+        <nstyle>
+            .box \{
+                border: 1px solid #ccc;
+                padding: 14px;
+                border-radius: 6px;
+                background: #f8f8f8;
+                max-width: 320px;
+            }
+
+            button \{
+                margin-top: 10px;
+            }
+        </nstyle>
+    </code>
+    <code lang="html" shiki>
+        <import name="notification-box" source="@/components/notification-box.nijor">
+        <template>
+            <h1>System Notifications</h1>
+            <notification-box title="Update Available">A new version of the application is ready to install</notification-box>
+            <notification-box title="Connection Status">The application is currently running in offline mode</notification-box>
+        </template>
+    </code>
     </section>
+
 </body>
-
-<script>
-    import hljs from 'scripts/highlight.js';
-</script>
-<script defer>
-    hljs.highlightAll();
-</script>

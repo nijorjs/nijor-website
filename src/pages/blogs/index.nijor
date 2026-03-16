@@ -1,0 +1,109 @@
+<head>
+    <title>Nijor | Blogs</title>
+</head>
+<body>
+    <section>
+        <div class="heading">
+            <h1>Blogs</h1>
+            <p>Read updates, technical articles, and notes about Nijor.</p>
+        </div>
+
+        <div class="blog-grid">
+            <a class="card" n:route="/blogs/note">
+                <!-- <span class="tag">Announcement</span> -->
+                <h2>Note from the Creator</h2>
+                <p>A personal note about Nijor, how it started, and where it is headed.</p>
+            </a>
+        </div>
+    </section>
+</body>
+
+<style>
+    section{
+        background-color: transparent;
+        padding: 40px;
+    }
+
+    .heading{
+        margin-bottom: 32px;
+    }
+
+    .heading p{
+        color: #4b5563;
+    }
+
+    .blog-grid{
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .card{
+        display: block;
+        text-decoration: none;
+        padding: 28px;
+        border-radius: 20px;
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        box-shadow: rgba(0, 0, 0, 0.06) 0px 4px 12px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover{
+        transform: translateY(-4px);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 24px;
+        border-color: #cfd8e3;
+    }
+
+    .tag{
+        display: inline-block;
+        font-size: 13px;
+        font-weight: 700;
+        color: #0099ff;
+        margin-bottom: 12px;
+    }
+
+    .card h2{
+        margin: 0;
+        font-size: 24px;
+        color: #0eaaf8;
+    }
+
+    .card p{
+        margin-top: 12px;
+        font-size: 16px;
+        line-height: 1.7;
+        color: #4b5563;
+    }
+
+    @media only screen and (min-width: 768px){
+        .blog-grid{
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>
+
+<style theme="dark">
+    section{
+        background-color: transparent;
+    }
+
+    .heading p{
+        color: #cfd4dc;
+    }
+
+    .card{
+        background-color: rgb(27, 27, 29);
+        border: 1px solid rgb(46, 46, 50);
+        box-shadow: rgba(255, 255, 255, 0.04) 0px 4px 12px;
+    }
+
+    .card:hover{
+        border-color: rgb(70, 70, 76);
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 10px 24px;
+    }
+
+    .card p{
+        color: #cfd4dc;
+    }
+</style>

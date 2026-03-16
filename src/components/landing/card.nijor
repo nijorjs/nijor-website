@@ -1,0 +1,40 @@
+<body props="{title, html}">
+    <div class="card">
+        <h2>{title}</h2>
+        <p>{html}</p>
+    </div>
+</body>
+
+<style>
+    .card{
+        padding: 28px 30px;
+        min-height: 190px;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover{
+        background: linear-gradient(60deg, #00A2E8, #0e73f8, #008be8);
+        color: white;
+        box-shadow: rgba(0, 238, 255, 0.24) 0px 10px 24px;
+        transform: translateY(-4px);
+    }
+
+    h3{
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+
+    p{
+        font-size: 18px;
+        line-height: 1.6;
+    }
+</style>
+
+<style theme="dark">
+    .card{
+        background-color: rgb(27, 27, 29);
+        box-shadow: rgba(255, 255, 255, 0.08) 0px 4px 12px;
+    }
+</style>

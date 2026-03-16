@@ -1,0 +1,66 @@
+<body>
+    <div class="main" id="docs-sidenav">
+        <ul n:loop source="links" var="link">
+           <a n:route="{link.url}"><li class:active="{$.route == link.url}">{link.title}</li></a>
+        </ul>
+    </div>
+</body>
+<style>
+    .main {
+        width: 250px;
+        height: 100%;
+        background-color: rgb(237, 237, 237);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        overflow: hidden;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .main {
+            display: none;
+        }
+    }
+
+    ul {
+        list-style: none;
+        padding: 0.5rem;
+    }
+
+    li {
+        color: inherit;
+        padding: 0rem 1rem;
+        letter-spacing: 1px;
+    }
+
+    a {
+        margin: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    a:hover {
+        color: #00b3ff;
+    }
+
+    .active {
+        color: rgb(0, 174, 254);
+        color: #07a8ff;
+        font-weight: 600;
+    }
+</style>
+<style theme="dark">
+    .main {
+        background-color: rgb(15, 17, 17);
+    }
+
+    .active{
+        color: #07b0ff;
+    }
+</style>
+<script>
+    import { route } from '@/data/state.js';
+    import { links } from '@/data/docs.js';
+
+    $.route = route.value;
+
+    route.subscribe(r => $.route = r);
+
+</script>

@@ -1,11 +1,92 @@
-<section n:imported="components/docs/section"/>
-<highlight n:imported="components/docs/highlight"/>
-<body>
-    <section title="Docs">
-        This documentation goes through everything you need to know to start building your Nijor project !
+<head>
+    <title>Documentation | Nijor</title>
+    <meta name="keywords" content="Nijor Docs, Nijor Documentation"/>
+    <meta name="description" content="Nijor Documentation">
+</head>
+
+<body layout="docs">
+
+    <section>
+        <h1>About</h1>
+        <p>
+            Nijor is a component-based frontend framework for building modern web applications. <br><br>
+
+            Unlike many UI frameworks that rely on separate meta-frameworks for application features, Nijor includes these capabilities by default. <br><br>
+            
+            File-based routing, layouts, middleware, and other application-level features are built directly into the framework. <br><br>
+
+            Templates are written in <span class="txt">*.nijor</span> files that combine markup, logic, and styles in a single component file. <br><br>
+
+            Nijor avoids the Virtual DOM and instead relies on the browser’s native DOM APIs for rendering. <br><br>
+
+            Server-side rendering (SSR) is currently under development. Once fully implemented, developers will be able to choose between client-side rendering (CSR) and server-side rendering (SSR) for production builds. <br><br>
+
+            Nijor is still evolving and is not a perfect framework yet. Like any growing project, it has some flaws and rough edges that are being improved over time.
+        </p>
     </section>
-   
-    <section title="Prerequisites">
-        You need to have some basic knowledge about HTML, CSS and Javascript. You need to have Node.js or Bun installed on your computer before using Nijor although you don't need to know anything about NodeJS or Bun.
+
+    <section>
+        <h1>Philosophy</h1>
+        <p>
+            Nijor is built around a simple principle: use the browser’s capabilities instead of recreating them in JavaScript. <br><br>
+
+            Modern frameworks often introduce additional abstraction layers such as Virtual DOMs or heavy runtime systems. Nijor aims to reduce this complexity by relying on native browser behavior wherever possible.
+        </p>
+
+        <h2>No Virtual DOM</h2>
+        <p>
+            Nijor updates the real DOM directly instead of maintaining a virtual representation.
+        </p>
+
+        <h2>Native Event Handling</h2>
+        <p>
+            Events are declared using inline attributes instead of generated <span class="txt">addEventListener</span> calls.
+        </p>
+
+        <h2>Application features built in</h2>
+        <p>
+            Routing, layouts, middleware, and plugins are included directly in the framework instead of requiring an additional meta-framework.
+        </p>
+
+        <h2>Shared runtime</h2>
+        <p>
+            Unlike many JavaScript frameworks, Nijor projects do not include a <span class="txt">node_modules</span> directory by default. <br><br>
+            Instead, the Nijor runtime files are shared across projects. This reduces disk usage and keeps projects lightweight. <br><br>
+            You can still install and use external packages via Bun or Node and import them in your project without extra configuration.
+        </p>
+
+        <h2>Still evolving</h2>
+        <p>
+            Nijor is actively evolving, and some parts of the framework are still being refined. One current limitation is the lack of proper error logging, which can make debugging harder than it should be. This is a known issue and will be improved in the future.
+        </p>
+    </section>
+
+    <section>
+        <h1>Project Structure</h1>
+        <p>
+            A typical Nijor project follows a simple and organized structure:
+        </p>
+
+    <code lang="text" shiki>
+    my-app/
+    ├── pages/
+    │   ├── index.nijor
+    │   ├── about.nijor
+    │   └── blog/
+    │       └── index.nijor
+    ├── layouts/
+    │   └── main.nijor
+    ├── middleware/
+    │   └── auth.js
+    ├── plugins/
+    │   └── example.js
+    ├── public/
+    │   └── assets/
+    └── nijor.config.js
+    </code>
+
+        <p>
+            The <span class="txt">pages</span> directory defines routes, <span class="txt">layouts</span> contains reusable layout components, <span class="txt">middleware</span> handles request-level logic, <span class="txt">plugins</span> extend the framework, and <span class="txt">public</span> stores static assets.
+        </p>
     </section>
 </body>

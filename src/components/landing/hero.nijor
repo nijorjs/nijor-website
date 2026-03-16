@@ -1,172 +1,158 @@
 <body>
-    <div class="main">
-        <div class="img" style="margin-top: 8rem;"><img src="{Logo}"/></div>
-        <div class="txt">
-            <p class="tagline typing" on:animationiteration="changeText(this)">Write Less, Do More !</p>
-        </div>
-        <div class="btns">
-            <a n:route="/docs" class="link">Get Started</a>
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Nijor</h1>
+            <p>Build modern web applications with reusable components, file-based routing, reactivity, and a clean developer experience.</p>
+            <div class="actions">
+                <a n:route="/docs" class="primary-btn">Get Started</a>
+                <!-- <a n:route="/docs/introduction" class="secondary-btn">Read Docs</a> -->
+            </div>
         </div>
     </div>
 </body>
 
 <style>
-    .main {
-        height: 50rem;
+    .hero {
+        min-height: calc(100vh - 6rem);
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        flex-shrink: 0;
-        background-color: rgb(244, 242, 242);
+        justify-content: space-between;
+        gap: 3rem;
+        padding: 60px 40px;
     }
 
-    .btns{
-        display: flex;
-        flex-direction: row;
+    .hero-content {
+        flex: 1;
+        max-width: 680px;
     }
 
-    .link {
-        margin: 2rem;
-        background-color: transparent;
-        padding: 1rem 2rem;
-        font-weight: 600;
-        font-size: 30px;
+    h1 {
+        margin: 0;
+        font-size: clamp(56px, 9vw, 92px);
+        font-weight: 700;
+        line-height: 1.15;
         letter-spacing: 1px;
-        background: -webkit-linear-gradient(60deg, #00A2E8, #0e73f8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .link:hover {
-        background: -webkit-linear-gradient(60deg, #00ccff, #00A2E8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        transform: scale(1.1);
-    }
-
-    .txt {
-        margin-top: 5rem;
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-    }
-
-    .tagline {
-        font-size: 40px;
-        font-weight: bold;
-        letter-spacing: 1px;
-        background: -webkit-linear-gradient(60deg, #00A2E8, #0e73f8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation-iteration-count: infinite;
-    }
-
-    .typing {
         display: inline-block;
-        overflow: hidden;
-        white-space: nowrap;
-        animation: type-delete 6s steps(21, end) infinite, change-color 6s infinite;
+        background: linear-gradient(60deg, #00A2E8, #0e73f8, #00A2E8);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: flow 2s linear infinite;
     }
 
-    @keyframes type-delete {
+    @keyframes flow {
         0% {
-            width: 0;
-        }
-
-        33.33% {
-            width: 100%;
-        }
-
-        66.67% {
-            width: 100%;
+            background-position: 0% center;
         }
 
         100% {
-            width: 0;
+            background-position: 200% center;
         }
     }
 
-    @keyframes change-color {
-        0% {
-            background: -webkit-linear-gradient(60deg, #006eff, #00A2E8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        12.5%{
-            background: -webkit-linear-gradient(60deg, #00A2E8, #5ecfff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        25% {
-            background: -webkit-linear-gradient(30deg, #5ecfff, #0ef8f8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        37.5%{
-            background: -webkit-linear-gradient(45deg,#0ef8f8, rgb(32, 248, 255));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        50%{
-            background: -webkit-linear-gradient(30deg,rgb(32, 248, 255), #ffcbef);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        62.5% {
-            background: -webkit-linear-gradient(15.5deg, #0ef8f8, rgb(255, 162, 252));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        75% {
-            background: -webkit-linear-gradient(75deg, rgb(255, 162, 252), rgb(255, 119, 119));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        87.5%{
-            background: -webkit-linear-gradient(80deg, rgb(255, 119, 119), #ffb3fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        100% {
-            background: -webkit-linear-gradient(60deg,#ffb3fe, #00A2E8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    p {
+        margin-top: 18px;
+        font-size: 22px;
+        line-height: 1.7;
+        max-width: 620px;
+        color: #2f3136;
     }
 
-    @media only screen and (max-width: 600px) {
-        .txt{
-            display: none;
-        }
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 36px;
     }
 
+    .primary-btn,
+    .secondary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        padding: 14px 24px;
+        border-radius: 999px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .primary-btn {
+        color: white;
+        /* background: linear-gradient(120deg, #0e73f8, #00A2E8); */
+        background-color: #0e73f8;
+        box-shadow: rgba(14, 115, 248, 0.24) 0px 8px 24px;
+    }
+
+    .primary-btn:hover {
+        background-color: #00A2E8;
+        transform: translateY(-2px);
+    }
+
+    .secondary-btn {
+        color: #111827;
+        background-color: white;
+        border: 1px solid #d9d9d9;
+    }
+
+    .secondary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px;
+    }
+
+    .hero-logo {
+        flex-shrink: 0;
+        width: min(100%, 500px);
+        height: auto;
+        object-fit: contain;
+    }
+
+    @media only screen and (max-width: 900px) {
+        .hero {
+            flex-direction: column;
+            /* text-align: center; */
+            padding: 50px 24px;
+        }
+
+        .hero-content {
+            max-width: 100%;
+        }
+
+        .brand-logo {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .actions {
+            /* justify-content: center; */
+        }
+
+        .hero-logo {
+            width: min(100%, 380px);
+        }
+    }
 </style>
+
 <style theme="dark">
-    .main {
+    .hero {
         background-color: rgb(28, 28, 28);
     }
-</style>
-<script>
-    import Logo from 'images/logo.svg';
 
-    const texts = [
-        "Unleash your Web Wizardy !",
-        "Write Less, Do More !"
-    ];
-    let currentIndex = 0;
-
-    function changeText(element) {
-        currentIndex = (currentIndex + 1) % texts.length;
-        element.textContent = texts[currentIndex];
-        element.style.animation = `type-delete 6s steps(${texts[currentIndex].length}, end) infinite, change-color 6s infinite`;
+    p {
+        color: #d3d7de;
     }
-</script>
+
+    .secondary-btn {
+        background-color: rgb(37, 37, 40);
+        border: 1px solid rgb(58, 58, 62);
+        color: white;
+    }
+</style>

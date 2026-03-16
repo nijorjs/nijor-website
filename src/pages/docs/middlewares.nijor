@@ -1,0 +1,78 @@
+<head>
+    <title>Middleware | Nijor</title>
+    <meta name="keywords" content="Middlewares in Nijor, Nijor Middlewares, Nijor Middleware"/>
+    <meta name="description" content="Middlewares in Nijor">
+</head>
+
+<body layout="docs">
+
+    <section>
+        <h1>Middleware</h1>
+        <p>Middlewares run on the server side.They allow you to intercept incoming requests before the route is handled.</p>
+        <p>Middleware is useful for tasks such as authentication, access control, request filtering, and other server-side checks.</p>
+    </section>
+
+    <section>
+        <h1>Registering Middleware</h1>
+        <p>Middlewares are registered in the <span class="txt">nijor.config.js</span> file.</p>
+
+    <code lang="js" shiki>
+        import auth from "@/middlewares/auth.js";
+        // ...
+        export const middlewares = [auth()];
+        // ...
+    </code>
+
+        <p>Nijor runs these middlewares on the server for incoming requests.</p>
+    </section>
+
+    <section>
+        <h1>Middleware Structure</h1>
+        <p>A middleware is usually written as a function that returns an async handler.The handler receives <span class="txt">req</span>, <span class="txt">res</span>, and <span class="txt">next</span>.</p>
+
+    <code lang="js" shiki>
+        function middleware(opts) \{
+            return async function(req, res, next) \{
+                // middleware logic
+                next();
+            }
+        }
+    </code>
+
+        <p>Call <span class="txt">next()</span> to pass control to the next middleware or continue request processing.</p>
+    </section>
+
+    <section>
+        <h1>Use Cases</h1>
+        <p>Middleware can be used to protect routes, validate requests, or intercept requests before they reach the page or endpoint.</p>
+        <p>A common use case is checking cookies to prevent unauthorized access to protected routes.</p>
+
+    <code lang="js" shiki>
+        function auth() \{
+            return async function(req, res, next) \{
+                const token = req.cookies?.token;
+
+                if (!token) \{
+                    res.statusCode = 401;
+                    res.end("Unauthorized");
+                    return;
+                }
+
+                next();
+            }
+        }
+    </code>
+    </section>
+
+    <section>
+        <h1>Intercepting Requests</h1>
+        <p>Since middleware runs before the request is completed, it can intercept requests and decide what should happen next.</p>
+        <p>A middleware may allow the request to continue, modify the response, or stop the request entirely.</p>
+    </section>
+
+    <section>
+        <h1>Note</h1>
+        <p>It is recommended to keep all your middlewares in separate files inside the <span class="txt">src/middleares</span> directory and import them in the <span class="txt">nijor.config.js</span>.</p>
+    </section>
+
+</body>

@@ -1,64 +1,68 @@
-<section n:imported="components/docs/section"/>
-<highlight n:imported="components/docs/highlight"/>
-<body>
-    <section title="Loops">
-        We can use the <highlight>n:for</highlight> attribute to render a list of items based on an array.
-        This attribute requires a special syntax in the form of <highlight>item in items</highlight>, where items is the source data array and item is an alias for the array element being iterated on:
-        
-        <pre><code>
-        &lt;body&gt;
+<head>
+    <title>Loops | Nijor</title>
+    <meta name="keywords" content="Loops in Nijor, Nijor Loops"/>
+    <meta name="description" content="Loops in Nijor">
+</head>
 
-            &lt;h1&gt;Shopping List :&lt;h1&gt;
-            &lt;div n:for="i in cart"&gt;
-                &lt;p&gt;\{i}&lt;/p&gt;&lt;br&gt;
-            &lt;/div&gt;
+<body layout="docs">
 
-        &lt;/body&gt;
-
-        &lt;script&gt;
-            let cart = ['Eggs','Olive Oil','Coconut','Chicken'];
-        &lt;/script&gt;
-        </code></pre>
-
+    <section>
+        <h1>Loops</h1>
+        <p>
+            Nijor provides a simple way to render repeated content using the <span class="txt">n:loop</span> attribute.
+            Loops are useful when you want to render a list of items from an array. <br>
+            A loop must be declared on a parent element. This is usually a <span class="txt">div</span>, but any suitable element can be used. You can't add <span class="txt">id</span> attribute to the element. <br>
+            The <span class="txt">n:loop</span> attribute works together with two other attributes :
+            <span class="txt">source</span> and <span class="txt">var</span>. <br>
+            <span class="txt">source</span> refers to the array variable defined in <span class="txt">script</span>, and <span class="txt">var</span> defines the variable name used for each item during iteration.
+        </p>
     </section>
 
-    <section title="n:reload">
-        To reload the list, we can use <highlight>n:reload</highlight> attribute in the same tag with <highlight>n:for</highlight> and give it a unique value. Unique value is important as the loop can be reloaded from any file/component.<br>
-        The reload function is used to reload those lists/async-loader(s) whose n:reload value matches the value passed inside the function.<br>
+    <section>
+        <h1>Example</h1>
+    <code lang="html" shiki>
+        <import name="house" source="@/components/houses.nijor"/>
+        <template>
+            <div n:loop var="x" source="houses">
+                <house name="{x.name}" rent="₹{x.rent}" location="{x.location}"></house>
+            </div>
+        </template>
 
-        <pre><code>
-        &lt;body&gt;
+        <nscript>
+            const houses = [
+                \{ name : "The Sky Mansion", rent: 62000, location: "Hengrabari, Guwahati" },
+                \{ name : "The Octagon Mansion", rent: 30000, location: "Ganeshguri, Guwahati" },
+                \{ name : "The Dragon Palace", rent: 45000, location: "Chacal, Guwahati" },
+            ];
+        </nscript>
+    </code>
+    </section>
 
-            &lt;input type="text" id="newItem"&gt;
-            &lt;input type="button" on:click="AddItem()" placeholder="What item to add ?"&gt;
+    <section>
+        <h1>With Reactive Source</h1>
+    <code lang="html" shiki>
+        <import name="house" source="@/components/houses.nijor"/>
+        <template>
+            <div n:loop var="x" source="$.houses">
+                <house name="{x.name}" rent="₹{x.rent}" location="{x.location}"></house>
+            </div>
+            <button on:click="more()">Load More</button>
+        </template>
 
-            &lt;h1&gt;Shopping List :&lt;h1&gt;
-            &lt;div n:for="i in cart" n:reload="cart"&gt;
-                &lt;p&gt;\{i}&lt;/p&gt;&lt;br&gt;
-            &lt;/div&gt;
+        <nscript>
+            $.houses = [
+                \{ name : "The Sky Mansion", rent: 62000, location: "Hengrabari, Guwahati" },
+                \{ name : "The Octagon Mansion", rent: 30000, location: "Ganeshguri, Guwahati" },
+                \{ name : "The Dragon Palace", rent: 45000, location: "Chacal, Guwahati" },
+            ];
 
-        &lt;/body&gt;
-
-        &lt;script&gt;
-
-            import \{reload} from "nijor";
-
-            let cart = ['Eggs','Olive Oil','Coconut','Chicken'];
-
-            function AddItem()\{
-                let item = document.getElementById('newItem').value;
-                cart.push(item);
-                reload('cart'); // Reload the list/async-loader with n:reload="cart"
+            async function more($)\{
+                const moreHouses = await fetch(...);
+                $.houses = [... $.houses, moreHouses]; // The entire loop would be rerendered, even those entries which didn't change
             }
 
-        &lt;/script&gt;
-        </code></pre>
-        
+        </nscript>
+    </code>    
     </section>
+
 </body>
-<script>
-    import hljs from 'scripts/highlight.js';
-</script>
-<script defer>
-    hljs.highlightAll();
-</script>

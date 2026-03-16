@@ -1,7 +1,17 @@
-<header n:imported="components/header"/>
-<sidenav n:imported="components/mobile-sidenav"/>
+<import name="header" source="@/components/header.nijor"/>
+<import name="sidenav" source="@/components/sidenav-mobile.nijor"/>
+
 <body>
     <sidenav></sidenav>
     <header></header>
-    <div style="margin-top: 5rem;" n:slot></div>
+    <div id="app"></div>
 </body>
+<style>
+    #app {
+        margin-top: 6rem;
+        width: 100%;
+        height: calc(100vh - 6rem);
+        display: flex;
+        flex-direction: column;
+    }
+</style>

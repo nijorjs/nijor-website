@@ -1,0 +1,63 @@
+<import name="card" source="@/components/landing/card.nijor" />
+<body>
+    <section class="container">
+        <div class="intro">
+            <h2>Everything you need to build modern web apps</h2>
+            <p>Nijor includes the essential tools to build fast, structured, and scalable web applications without unnecessary complexity.</p>
+        </div>
+
+        <div class="main">
+            <card title="Reusable Components">Build self-contained components with scoped styles and reuse them across your application.</card>
+            <card title="File-Based Routing">Define routes through your file structure, with support for layouts and dynamic parameters.</card>
+            <card title="Reactivity">Create interactive interfaces with simple reactive variables and predictable updates.</card>
+            <card title="SSR">Render on the client or the server, with server-side rendering support that continues to evolve.</card>
+            <card title="Server Middleware">Handle authentication, access control, and request processing with server-side middleware.</card>
+            <card title="Plugins">Extend Nijor with plugins and add support for custom features and integrations.</card>
+        </div>
+    </section>
+</body>
+
+<style>
+    .container{
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        padding: 80px 30px;
+        background-color: #efefef;
+    }
+
+    .intro{
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    h2{
+        font-size: 40px;
+        margin-bottom: 14px;
+    }
+
+    p{
+        font-size: 20px;
+        line-height: 1.6;
+    }
+
+    .main{
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 16px;
+        width: 100%;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .main{
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+</style>
+
+<style theme="dark">
+    .container{
+        background-color: #242527;
+    }
+</style>

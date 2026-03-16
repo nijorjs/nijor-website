@@ -1,50 +1,11 @@
-<hero n:imported="components/landing/hero.nijor" />
-<features n:imported="components/landing/features.nijor" />
-<!-- <power n:imported="components/landing/power.nijor"/> -->
-
+<import name="hero" source="@/components/landing/hero.nijor"/>
+<import name="highlights" source="@/components/landing/highlight.nijor"/>
+<head>
+    <title>Nijor</title>
+    <meta name="keywords" content="Nijor, Nijor JS"/>
+    <meta name="description" content="Nijor is a modern & modular web framework !">
+</head>
 <body>
-    <div class="main">
-        <hero></hero>
-        <features></features>
-        <!-- <power></power> -->
-    </div>
+    <hero></hero>
+    <highlights></highlights>
 </body>
-<style>
-    .main {
-        display: flex;
-        flex-direction: column;
-        height: calc(100vh - 5rem);
-        width: 100%;
-        background-color: rgb(236, 235, 235);
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-
-    @media only screen and (min-width: 600px) {
-
-        .main::-webkit-scrollbar {
-            background-color: transparent;
-            width: 8px;
-        }
-
-        .main::-webkit-scrollbar-thumb {
-            background-color: transparent;
-            width: 8px;
-            height: 8px;
-        }
-
-        .main::-webkit-scrollbar:hover,.main::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(218, 214, 214, 0.224);
-        }
-
-        .main::-webkit-scrollbar-thumb:hover,.main::-webkit-scrollbar-thumb:active {
-            background-color: #0099ff;
-        }
-
-    }
-</style>
-<style theme="dark">
-    .main {
-        background-color: rgb(22, 32, 37);
-    }
-</style>

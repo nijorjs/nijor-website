@@ -1,125 +1,279 @@
-<section n:imported="components/docs/section"/>
-<highlight n:imported="components/docs/highlight"/>
-<body>
-    <section title="Routing">
-        Nijor provides a client-side routing capability that allows the rendering of different user interfaces based on specific routes.
-        Unlike traditional approaches, Nijor's routing mechanism renders routes within the same page, eliminating the need for page refreshes and delivering a seamless user experience.
+<head>
+    <title>Routing | Nijor</title>
+    <meta name="keywords" content="Routing in Nijor, Nijor Routing, Nijor Router"/>
+    <meta name="description" content="Routing in Nijor">
+</head>
+
+<body layout="docs">
+
+    <section>
+        <h1>Routing</h1>
+        <p>
+            Nijor uses file-based routing.
+            Routes are automatically generated from the files inside the <span class="txt">src/pages</span> directory.
+            Each <span class="txt">.nijor</span> file inside this directory becomes a route in your application.
+            This approach removes the need to manually configure routes.
+        </p>
     </section>
 
-    <section title="File-Based Routing">
-        Nijor simplifies the process of rendering pages for different routes by utilizing file-based routing. This means that developers are relieved from the responsibility of manually coding the rendering logic for each route. Instead, Nijor's compiler automatically handles this based on the organization of files in the <highlight>src/pages</highlight> directory of your Nijor project. <br><br>
-        To illustrate this behavior, let's consider an example. When a user visits the '/' route of our website, the page rendered will be src/pages/index.nijor. Similarly, accessing the '/about' route will trigger the rendering of src/pages/about.nijor. In the event that a route doesn't exist, Nijor will render src/pages/404.nijor. This convenient approach streamlines the development process and improves overall efficiency.
-    </section>
+    <section>
+        <h1>Understanding App.js</h1>
+        <p>
+            <span class="txt">src/App.js</span> is the entry point of a Nijor application.
+            It is not limited to routing. Nijor applications can also be written without using the router.
+        </p>
 
-    <section title="Understanding the App.nijor file">
-        The <highlight>App.nijor</highlight> is the root component that gets rendered before anything else ; all the other components and pages get rendered inside it. Without this page, the Nijor router simply won't work. You can render those components in this page which remain same in all the pages, thus preventing the need for rerendering the common components during navigation through different routes. <br>
-        The App.nijor file must have the <highlight>&lt;div n:slot&gt;&lt;/div&gt;</highlight> in the <highlight>App.nijor</highlight> file. The content from the routes (pages from the src/page/ dir) will be rendered inside this special tag.
-        <pre><code lang="html">
-        &lt;body&gt;
-            &lt;div n:slot&gt;
-                &lt;!--All the pages from the src/pages directory are rendered inside this div (marked with the n:slot attribute). 
-                    Anything outside this div is always rendered irrespective of route.
-                    You can write code for common header or footer outside this div so that it renders in every page, #Reasuablity
-                --&gt;
-            &lt;/div&gt;
+        <h2>Without Routing</h2>
+        <p>
+            If your application does not use routing, you can directly run a Nijor component from <span class="txt">App.js</span>. 
+            In that case, replace <span class="txt">&lt;div id="app"&gt;&lt;/div&gt;</span> in <span class="txt">index.html</span> with <span class="txt">&lt;app&gt;&lt;/app&gt;</span>.
+        </p>
+    <code lang="js" shiki>
+        import App from "@/App.nijor";
 
-            &lt;!-- Note : Do not add an 'id' attribute to the div with the n:slot attribute. For styling, use 'class' instead. --&gt;
-        &lt;/body&gt;
-        </code></pre>
-    </section>
+        (async () => await App.run('app', 1))();
+    </code>
+        <p>
+            In this example, the <span class="txt">App</span> component is rendered directly and all other components are rendered inside the App component.
+        </p>
 
-    <section title="Boilerplate Code for Routing">
-        In order to use the Nijor Router in your project, your <highlight>src/App.js</highlight> file must contain the following Boilerplate code :
-        <pre><code lang="js">
-        import \{ Render } from 'nijor';
-        import 'nijor/router';
-        import App from 'App.nijor';
+        <h2>How Components Run</h2>
+        <p>
+            Internally, all Nijor components are rendered in this way.
+            Every compiled Nijor component exposes a <span class="txt">run()</span> method.
+        </p>
+        <p>
+            The <span class="txt">run()</span> method takes two arguments:
+        </p>
+        <p>
+            <span class="txt">name</span> is the component name to target, and <span class="txt">num</span> specifies how many matching elements should be replaced.
+        </p>
+    <code lang="js" shiki>
+        Component.run(name, num);
+    </code>
+        <p>
+            The <span class="txt">name</span> argument exists because the same component can be imported into different pages using different names. <br>
+            The <span class="txt">num</span> argument tells Nijor how many occurrences of that component should be replaced. <br>
+        </p>
+        <p>
+            In normal application development, you usually do not need to work with these details directly.
+            They are handled internally by the compiler.
+        </p>
+
+        <h2>With Routing</h2>
+        <p>
+            When routing is enabled, <span class="txt">App.js</span> also initializes the router and provides a place for the compiler to inject route and layout definitions.
+        </p>
+    <code lang="js" shiki>
+        import \{ Render } from "nijor/core";
+        import "nijor/router";
 
         //@Routes()
-        
-        (async ()=> await Render(App))();
-        </code></pre>
-        Note: The <highlight>//@Routes()</highlight> comment is crucial for the Nijor router to function properly. Please ensure that there is no code or comments written on the same line as this comment. <br>
+
+        (async () => await Render(document.getElementById('app')))();
+    </code>
+        <p>
+            The <span class="txt">//@Routes()</span> comment is used by the compiler.
+            During compilation, it is replaced with the generated route and layout definitions.
+        </p>
+
+        <h2>Using App.nijor with Routing</h2>
+        <p>
+            If you want all layouts to share common components, you can create <span class="txt">App.nijor</span> and use it as the root component of the application.
+        </p>
+        <p>
+            In that case, replace <span class="txt">&lt;div id="app"&gt;&lt;/div&gt;</span> in <span class="txt">index.html</span> with <span class="txt">&lt;app&gt;&lt;/app&gt;</span>.
+        </p>
+        <p>
+            Then <span class="txt">App.js</span> will look like this:
+        </p>
+    <code lang="js" shiki>
+        import \{ Render } from "nijor/core";
+        import "nijor/router";
+        import App from "@/App.nijor";
+
+        //@Routes()
+
+        (async () => \{
+            await App.run('app', 1);
+            await Render(document.getElementById('app'));
+        })();
+    </code>
+        <p>
+            In this setup, <span class="txt">App.nijor</span> is rendered first, and the router then renders layouts and pages inside the <span class="txt">#app</span> element defined inside it.
+        </p>
     </section>
 
-    <section title="Routing">
-        In order to navigate between routes we use the <highlight>n:route</highlight> attribute on the anchor tag only. If we use the <highlight>href</highlight> attribute instead of <highlight>n:route</highlight>, we'll still be able to navigate. But the page will reload and the navigation won't be that smooth. Use <highlight>href</highlight> attribute for linking to external website.
-        <pre><code>
-        &lt;a n:route="/"&gt;Index Page&lt;/a&gt; &lt;!--Routing will be smooth, the page won't refresh--&gt;
-        &lt;a href="/"&gt;Index Page&lt;/a&gt; &lt;!--Routing won't be smooth, the page will refresh--&gt;
-        </code></pre>
+    <section>
+        <h1>Layouts</h1>
+        <p>
+            Layouts define the shared structure used by pages.
+            Common layout elements include navigation bars, headers, sidebars, footers.
+            Layouts are stored inside <span class="txt">src/layouts</span>. Every project must contain a default layout <span class="txt">src/layouts/default.nijor</span> because every page is rendered inside a layout.
+        </p>
+        <p>
+            Layouts use the special attribute <span class="txt">n:slot</span> to determine where page content should be rendered. You shouldn't add id to these elements.
+        </p>
+    <code lang="html" shiki>
+        <template>
+            <nav>
+                <a n:route="/">Home</a>
+                <a n:route="/about">About</a>
+            </nav>
+
+            <div n:slot></div>
+        </template>
+    </code>
+        <p>
+            Pages can specify which layout they should use using the <span class="txt">layout</span> attribute on the <span class="txt">body</span> element.
+        </p>
+    <code lang="html" shiki>
+        <template layout="dashboard">
+            <h1>Dashboard</h1>
+        </template>
+    </code>
+        <p>
+            This will use the layout file <span class="txt">src/layouts/dashboard.nijor</span>. If the layout attribute is not defined, Nijor will automatically use <span class="txt">src/layouts/default.nijor</span>.
+        </p>
     </section>
 
-        <section title="Sub Routes within a route">
-        By sub routes, we mean routing within a parent route. <br>
-        For instance, there is a route say, <highlight>/dashboard</highlight> which has some sub-routes like <highlight>/dashboard/profile</highlight>, <highlight>/dashboard/settings</highlight>, etc and each of these pages have a lot of common components and common layout in general. So, you don't want to copy-paste the same common code for these pages. In these scenarios, sub-routes can be very useful. <br><br>
-        
-        In order to create a sub route within a route : <br>
-        (1) Create a folder, say 'dashboard' inside the src/pages directory. <br>
-        (2) Create the <highlight>_.nijor</highlight> file within it. (optional)<br>
-        (3) Create <highlight>index.nijor</highlight> file within the folder.<br>
-        (4) Create <highlight>profile.nijor</highlight> file within the folder.<br><br>
-        
-        Now, write all the common components in the <highlight>_.nijor</highlight> file. This file contains all the common code/components for the '/dashboard' route. Whenever somebody visits '/dashboard/*', this page will get rendered.
-        If you don't have the _.nijor file, the routes will be directly rendered inside the div[n:slot] in the <highlight>App.nijor</highlight>.
-        
-        <pre><code>
-        &lt;!-- src/pages/dashboard/_.nijor --&gt;
-        &lt;sidenav n:imported="components/sidenav"/&gt;
-        &lt;body&gt;
-            &lt;sidenav&gt;&lt;/sidenav&gt;
-            &lt;div n:slot&gt;
-                &lt;!--All the subroutes will be rendered inside this folder.
-                Anything outside it will be rendered for any sub-route within '/dashboard' route--&gt;
-            &lt;/div&gt;
-        &lt;/body&gt;
-        </code></pre>
-
-        <pre><code>
-        &lt;!-- src/pages/dashboard/index.nijor --&gt;
-        &lt;!-- page will be rendered when route is /dasboard --&gt;
-        &lt;body&gt;
-            &lt;div&gt;
-                &lt;h1&gt;Welcome to Dasboard Page&lt;/h1&gt;
-            &lt;/div&gt;
-        &lt;/body&gt;
-        </code></pre>
-
-        <pre><code>
-        &lt;!-- src/pages/dashboard/profile.nijor --&gt;
-        &lt;!-- page will be rendered when route is /dasboard/profile --&gt;
-        &lt;body&gt;
-            &lt;div&gt;
-                &lt;h1&gt;Welcome to Profile Page&lt;/h1&gt;
-            &lt;/div&gt;
-        &lt;/body&gt;
-        </code></pre>
-
-        You can have more than one level of sub-routing, but can't use _.nijor file then. It means that you can have a file like pages/dashboard/_.nijor but not pages/dashboard/me/_.nijor .
+    <section>
+        <h1>Basic Routing</h1>
+        <p>
+            Every file inside <span class="txt">src/pages</span> becomes a route.
+        </p>
+    <code lang="txt" shiki>
+        src/pages/
+            index.nijor
+            about.nijor
+    </code>
+        <p>
+            This generates the following routes:
+        </p>
+    <code lang="txt" shiki>
+        index.nijor  -> /
+        about.nijor  -> /about
+    </code>
+        <p>
+            If a route does not exist, Nijor renders <span class="txt">src/pages/404.nijor</span>.
+        </p>
     </section>
 
-    <section title="Parameterized Routing">
-        Nijor supports parameterized routes, allowing for variable paths within routes. To define a parameterized route, enclose the parameter(s) using square brackets while naming your file ( e.g [parameter-name].nijor ). You can add any desired text before or after the parameter name. For example: @[user].nijor, [item].nijor, id-[x].nijor, etc.
-        <br><br>
-        Let's explore parameterized routes with an example: <br>
-        Suppose we are building a profile page for users on our site, and we want to render the profile of 'rudra' when accessing the '/@rudra' route. Similarly, we want to display the profile of 'parvati' for the '/@parvati' route, and so on. We'll create a single file <highlight>pages/@[user]/index.nijor</highlight>
-        <pre><code>
-        &lt;body params="\{user}"&gt; &lt;!-- You can use 'props' instead of 'params' but 'params' is recommended --&gt;
-            &lt;div&gt;
-                &lt;h1&gt;Hi \{user}&lt;/h1&gt; 
-                &lt;!-- 
-                    If the user visits /@rudra &lt;h1&gt;Hi \{user}&lt;/h1&gt; will become &lt;h1&gt;Hi rudra&lt;/h1&gt; 
-                    If the user visits /@parvati &lt;h1&gt;Hi \{user}&lt;/h1&gt; will become &lt;h1&gt;Hi parvati&lt;/h1&gt; 
-                --&gt;
-            &lt;/div&gt;
-        &lt;/body&gt;
-        </code></pre>
-        You can have routes like /@[user]/dashboard , /@[user]/media,/@[user]/p-[id] , etc.
+    <section>
+        <h1>Nested Routes</h1>
+        <p>
+            Folders inside <span class="txt">src/pages</span> create nested routes.
+        </p>
+    <code lang="txt" shiki>
+        src/pages/
+            blog/
+                index.nijor
+                [slug].nijor
+    </code>
+        <p>
+            This generates the following routes:
+        </p>
+    <code lang="txt" shiki>
+        blog/index.nijor   -> /blog
+        blog/[slug].nijor  -> /blog/:slug
+    </code>
     </section>
+
+    <section>
+        <h1>Parameterized Routing</h1>
+        <p>
+            Nijor supports parameterized routing.
+            A dynamic route is created by wrapping the parameter name in square brackets in the file name.
+        </p>
+    <code lang="txt" shiki>
+        src/pages/products/[id]/[name].nijor
+    </code>
+        <p>
+            This route can match paths like <span class="txt">/products/42/laptop</span>.
+            Pages receive route parameters through <span class="txt">params</span> instead of props.
+        </p>
+    <code lang="html" shiki>
+        <template params="\{ id, name }">
+            <h1>{name}</h1>
+            <button on:click="buy('\{id}')">Buy {name}</button>
+        </template>
+
+        <nscript>
+            function buy(id) \{
+                // API calls
+            }
+        </nscript>
+    </code>
+        <p>
+            Route parameters can be used directly inside <span class="txt">script</span> just like other variables.
+            However, route parameters should not be referenced directly inside inline event function calls.
+        </p>
+    </section>
+
+    <section>
+        <h1>onRoute</h1>
+        <p>Nijor provides an <span class="txt">onRoute()</span> helper for running code whenever the current route changes.</p>
+        <p>
+            The callback receives the current route as its argument.
+            This can be useful for analytics, route-based side effects, or logic that should run after navigation.
+        </p>
+
+    <code lang="js" shiki>
+        import \{ onRoute } from "nijor/router";
+
+        onRoute(route => \{ /* Do something */});
+    </code>
+
+        <p>Every time the page route changes, the registered callback runs with the updated route.</p>
+    </section>
+
+    <section>
+        <h1>Navigation</h1>
+        <p>
+            Navigation between routes is done using the <span class="txt">n:route</span> attribute on anchor tags.
+            The Nijor compiler converts <span class="txt">n:route</span> links into client-side navigation handlers, allowing pages to change without reloading the browser.
+            Using <span class="txt">href</span> instead will still work, but it will cause the page to refresh.
+        </p>
+    <code lang="html" shiki>
+        <a nroute="/">Index Page</a> <!--Routing will be smooth ; the page won't refresh-->
+        <a href="/">Index Page</a> <!--Routing won't be smooth ; the page will refresh-->
+    </code>
+        <p>
+            Use <span class="txt">n:route</span> for navigation within a Nijor application.
+            Use <span class="txt">href</span> for external links.
+        </p>
+    </section>
+
+    <section>
+        <h1>Metadata</h1>
+        <p>
+            Pages inside the <span class="txt">src/pages</span> directory can include a <span class="txt">head</span> tag.
+            This tag is used for page metadata such as the document title and meta tags.
+        </p>
+        <p>
+            The <span class="txt">title</span> defined inside <span class="txt">head</span> works in both CSR and SSR.
+            Other metadata written inside <span class="txt">head</span> is mainly used during SSR.
+        </p>
+        <p>Route parameters can also be used inside the <span class="txt">head</span> tag.</p>
+
+    <code lang="html" shiki>
+        <nhead>
+            <title>\{name} | Product</title>
+            <meta name="description" content="Buy {name} from our store" />
+        </nhead>
+
+        <template params="\{ id, name }">
+            <section>
+                <h1>{name}</h1>
+                <p>Product ID: {id}</p>
+            </section>
+        </template>
+    </code>
+
+        <p>
+            In client-side rendering, Nijor uses the page title from the <span class="txt">head</span> tag.
+            Other metadata is primarily useful when server-side rendering is enabled.
+        </p>
+    </section>
+
 </body>
-<script>
-    import hljs from 'scripts/highlight.js';
-</script>
-<script defer>
-    hljs.highlightAll();
-</script>
