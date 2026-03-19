@@ -6,16 +6,18 @@
         <h1>Quick Start</h1>
         <p>This guide will help you create and run your first Nijor project.</p>
     </section>
+
     <section>
         <h1>Install the CLI</h1>
         <p>
             In order to use Nijor, make sure you have Bun installed (Node will also work). <br>
-            Intall Nijor globally :
+            Install Nijor globally :
         </p>
     <code lang="shell" shiki>
         bun add nijor -g
     </code>
     </section>
+
     <section>
         <h1>Create a project</h1>
     <code lang="shell" shiki>
@@ -27,11 +29,25 @@
     </code>
         <p>A Nijor project is created with many files and folders.</p>
     </section>
+
     <section>
         <h1>Start the dev server</h1>
     <code lang="shell" shiki>
         nijor dev
     </code>
-    <p>The dev server will start on port 3000 with live_reload enabled. You can change this behavior in the <span class="txt">nijor.config.js</span>.</p>
+        <p>The dev server will start on port 3000 with <span class="txt">live_reload</span> enabled. You can change this behavior in the <span class="txt">nijor.config.js</span>.</p>
+    </section>
+
+    <section>
+        <h1>Build for production</h1>
+        <p>
+            When you're ready to deploy your app, you can create an optimized production build:
+        </p>
+    <code lang="shell" shiki>
+        nijor build
+    </code>
+        <p>
+            This will generate a production-ready version of your app with optimized assets.
+        </p>
     </section>
 </body>

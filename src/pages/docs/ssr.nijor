@@ -1,5 +1,6 @@
 <head>
     <title>Server Side Rendering | Nijor</title>
+    <meta name="keywords" content="Nijor SSR, Nijor SSG, Server Side Rendering in Nijor">
     <meta name="description" content="Learn about Server Side Rendering in Nijor.">
 </head>
 
@@ -23,6 +24,14 @@
 
         <p>
             This approach is intentional. Rendering components on every request can be computationally expensive, so Nijor avoids unnecessary server work by generating static HTML ahead of time.
+        </p>
+
+        <p>
+            <strong>Note:</strong> SSR/SSG in Nijor only works during the production build using <span class="txt">nijor build</span>. It is not available in <span class="txt">nijor dev</span>, since prebuilding pages is computationally expensive and would slow down development.
+        </p>
+
+        <p>
+            This limitation is temporary and will be improved in the future as the rendering system becomes more optimized.
         </p>
 
         <p>
