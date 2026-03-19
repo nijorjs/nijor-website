@@ -80,13 +80,18 @@
     │   └── auth.js
     ├── plugins/
     │   └── example.js
-    ├── public/
-    │   └── assets/
+    ├── assets/
+    │   ├── modules/
+    │   └── style.css
     └── nijor.config.js
     </code>
 
         <p>
-            The <span class="txt">pages</span> directory defines routes, <span class="txt">layouts</span> contains reusable layout components, <span class="txt">middleware</span> handles request-level logic, <span class="txt">plugins</span> extend the framework, and <span class="txt">public</span> stores static assets.
+            The <span class="txt">pages</span> directory defines routes, <span class="txt">layouts</span> contains reusable layout components, <span class="txt">middleware</span> handles request-level logic, <span class="txt">plugins</span> extend the framework, and <span class="txt">assets</span> stores static assets.
+        </p>
+        <p>
+            You can place your own static files inside the <span class="txt">assets</span> directory. <br><br>
+            However, avoid modifying <span class="txt">style.css</span> and the <span class="txt">modules</span> directory, as these are automatically generated and managed by the compiler.
         </p>
     </section>
 </body>
