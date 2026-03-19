@@ -7,20 +7,35 @@
     <section>
         <h1>Server Side Rendering</h1>
         <p>
-            Nijor supports Server Side Rendering, but the feature is still evolving and is not yet fully mature. <br><br>
-            You can still use SSR by changing the build mode from <span class="txt">spa</span> to <span class="txt">ssr</span> in your <span class="txt">nijor.config.js</span> file.
+            Nijor provides a rendering mode labeled as Server Side Rendering (SSR), but its behavior is closer to Static Site Generation (SSG). <br><br>
+            Instead of rendering components on the server for every request, Nijor prebuilds pages into HTML files during the build process and serves them directly.
         </p>
 
-    <code lang="js" shiki>\
+        <p>
+            You can enable this mode by changing the build configuration in <span class="txt">nijor.config.js</span>:
+        </p>
+
+    <code lang="js" shiki>
         export const build = \{
             mode: "ssr"
         }
     </code>
 
         <p>
-            At the moment, the main issue lies in hydration. The server-rendered HTML is generated correctly, but hydration is not yet working properly in all cases. <br><br>
-            As a temporary workaround, rendered components are rendered again on page load. This means SSR can already be used, but the current behavior is not as efficient or polished as it should be. <br><br>
-            This limitation is known and will be fixed in the future as Nijor’s SSR support continues to improve.
+            This approach is intentional. Rendering components on every request can be computationally expensive, so Nijor avoids unnecessary server work by generating static HTML ahead of time.
+        </p>
+
+        <p>
+            Dynamic behavior is still supported on the client after the page loads, allowing applications to remain interactive while benefiting from fast initial load times.
+        </p>
+
+        <p>
+            Currently, hydration is still evolving. While the prebuilt HTML is served correctly, client-side hydration may not work reliably in all cases.
+            As a temporary workaround, components may re-run on page load, which can lead to redundant rendering.
+        </p>
+
+        <p>
+            This limitation is known and will be improved as Nijor’s rendering system matures.
         </p>
     </section>
 </body>

@@ -245,6 +245,30 @@
     </section>
 
     <section>
+        <h1>Prefetching</h1>
+        <p>
+            Nijor automatically prefetches routes linked on the page to improve navigation speed.
+            When a link becomes visible in the viewport, its corresponding route is fetched in advance,
+            making page transitions nearly instant.
+        </p>
+        <p>
+            While prefetching improves performance in most cases, it may not always be desirable,
+            especially for routes with heavy data requirements or limited network conditions.
+        </p>
+        <p>
+            To disable prefetching for a specific link, use the <span class="txt">no-prefetch</span> attribute:
+        </p>
+
+    <code lang="html" shiki>
+        <a nroute="/products" no-prefetch>Products</a>
+    </code>
+
+        <p>
+            This ensures that the route is only loaded when the user actually navigates to it.
+        </p>
+    </section>
+
+    <section>
         <h1>Metadata</h1>
         <p>
             Pages inside the <span class="txt">src/pages</span> directory can include a <span class="txt">head</span> tag.
