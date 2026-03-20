@@ -24,7 +24,11 @@
             /* CSS here is scoped ; the styles defined here will only apply to html inside this body tag */
         </nstyle>
         <nscript>
-            // Your JS goes here
+            // Your JS + Import statements goes here
+        </nscript>
+        <nscript defer>
+            // JS writen here runs only after the UI of the component is fully rendered
+            // Import statements are not allowed here
         </nscript>
     </code>
     </section>
