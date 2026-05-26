@@ -139,10 +139,14 @@
     import { links } from '@/data/docs.js';
 
     $.route = route.value;
-    route.subscribe(r => $.route = r);
+    const unsub = route.subscribe(r => $.route = r);
 
     export function close() {
         const sidenav = document.getElementById('sidenav-mobile');
         sidenav.style.width = "0%";
+    }
+
+    export function onUnmount(){
+        unsub();
     }
 </script>

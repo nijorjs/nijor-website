@@ -99,7 +99,7 @@
     </section>
 
     <section>
-        <h1>DOM References: <span class="txt">n:ref</span></h1>
+        <h1>DOM References <span class="txt">n:ref</span></h1>
         <p>
             If you need to access raw DOM nodes directly (e.g., to focus an input, trigger video playback, or read a form element's current property), use the <span class="txt">n:ref</span> attribute.
         </p>
@@ -141,10 +141,10 @@
     </section>
 
     <section>
-        <h1>Two-Way Data Binding: <span class="txt">n:bind</span></h1>
+        <h1>One-Way Data Binding <span class="txt">n:bind</span></h1>
         <p>
             To bind a user input's value directly to a reactive state variable in real time, use the <span class="txt">n:bind</span> attribute. 
-            This sets up a two-way sync between your DOM element and your reactive state:
+            This sets up a one-way sync between your DOM element and your reactive state :
         </p>
         <p>
             It is fully supported on <span class="txt">input</span> tags, <span class="txt">textarea</span> elements, and any container containing the <span class="txt">contenteditable="true"</span> property.
@@ -152,7 +152,7 @@
 
     <code lang="html" shiki>
         <template>
-            <h1>Welcome, \{$.name || "Stranger"}!</h1>
+            <h1>নমস্কাৰ \{$.name || "Stranger"}!</h1>
             <input nbind="{$.name}" placeholder="Type your name..." />
         </template>
     </code>
@@ -165,14 +165,14 @@
     <code lang="html" shiki>
         <template>
             <textarea nbind="\{$.message}"></textarea>
-            <p>Characters: \{$.message.length}</p>
+            <p>Characters : \{$.message.length}</p>
         </template>
     </code>
 
     <code lang="html" shiki>
         <template>
             <div contenteditable="true" nbind="\{$.text}"></div>
-            <p>Raw text: \{$.text}</p>
+            <p>Raw text : \{$.text}</p>
         </template>
     </code>
     </section>

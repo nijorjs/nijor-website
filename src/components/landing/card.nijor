@@ -21,9 +21,10 @@
         transform: translateY(-4px);
     }
 
-    h3{
+    h2{
         font-size: 22px;
         margin-bottom: 12px;
+        color: inherit;
     }
 
     p{
