@@ -8,7 +8,7 @@ autoTheme();
 //@Routes()
 
 (async () => {
-    if (document.body.hasAttribute('rendered')) {
+    if (document.body.classList.contains('rendered')) {
         document.body.innerHTML = `<app></app>`;
     }
     await App.run('app', 1);
