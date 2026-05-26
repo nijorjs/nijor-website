@@ -1,143 +1,141 @@
 <head>
-    <title>Styles</title>
-    <meta name="keywords" content="Themes in Nijor, Nijor Themes, Nijor Reactive Classes"/>
-    <meta name="description" content="Styling in Nijor">
+    <title>Styles | Nijor</title>
+    <meta name="keywords" content="Themes in Nijor, Nijor Themes, Reactive Classes, Scoped Styles, PostCSS"/>
+    <meta name="description" content="Master scoped styles, dark mode themes, conditional classes, and PostCSS configuration in Nijor.">
 </head>
 
 <body layout="docs">
 
     <section>
-        <h1>Themes</h1>
+        <h1>Styling & Themes</h1>
         <p>
-            Dark mode is common in modern applications. While it can be implemented using CSS media queries, that approach only works when the browser or operating system theme is already set to dark.
+            Nijor offers elegant support for styling. By default, styles defined inside a component are fully scoped, meaning they only apply to the HTML elements declared within that component.
         </p>
         <p>
-            In many applications, users should be able to choose between light mode, dark mode, or automatic mode without changing their browser settings. Nijor provides built-in support for this through theme-aware styles and the <span class="txt">nijor/theme</span> module.
+            In addition to scoped styles, Nijor includes native support for dark mode, multiple custom themes, reactive class binding, and PostCSS integration out of the box.
+        </p>
+    </section>
+
+    <section>
+        <h1>Component Theming</h1>
+        <p>
+            Modern applications frequently require multi-theme support (e.g., Light, Dark, or Dim modes). While standard CSS media queries are effective, they are bound to the operating system's settings.
         </p>
         <p>
-            In Nijor, themes are defined using the <span class="txt">theme</span> attribute on <span class="txt">style</span> tags.
-            Styles inside an <span class="txt">style</span> block without a <span class="txt">theme</span> attribute are applied for all themes and are generally used as the base or light theme.
+            Nijor solves this by providing the <span class="txt">theme</span> attribute on <span class="txt">&lt;style&gt;</span> (or <span class="txt">&lt;nstyle&gt;</span> in templates) blocks. An unthemed style block represents the base or default theme. Themed style blocks override specific properties when their target theme is activated.
         </p>
 
     <code lang="html" shiki>
         <template>
             <div>
-                <h1>Nomoskar</h1>
+                <h1>Theme Explorer</h1>
             </div>
         </template>
 
         <nstyle>
+            /* Base (Default/Light) Theme Styles */
             div \{
                 margin: 10px;
-                padding: 10px;
-                background-color: white;
+                padding: 16px;
+                background-color: #ffffff;
+                border: 1px solid #ddd;
             }
 
             h1 \{
-                color: black;
+                color: #333333;
             }
         </nstyle>
 
         <nstyle theme="dark">
+            /* Scoped Dark Theme Overrides */
             div \{
-                background-color: black;
+                background-color: #121212;
+                border-color: #333333;
             }
 
             h1 \{
-                color: white;
+                color: #ffffff;
             }
         </nstyle>
 
         <nstyle theme="dim">
+            /* Scoped Dim Theme Overrides */
             div \{
-                background-color: rgb(52, 74, 87);
+                background-color: #2c3e50;
+                border-color: #34495e;
             }
 
             h1 \{
-                color: white;
+                color: #ecf0f1;
             }
         </nstyle>
     </code>
+    </section>
 
+    <section>
+        <h1>Managing Active Themes</h1>
         <p>
-            In this example, the unthemed <span class="txt">style</span> block provides the base styles.
-            The themed style blocks override specific properties when the active theme matches their <span class="txt">theme</span> value.
-        </p>
-        <p>
-            The <span class="txt">nijor/theme</span> module provides functions for handling themes in a Nijor application.
-            It exports two functions: <span class="txt">autoTheme()</span> and <span class="txt">setTheme()</span>.
+            The built-in <span class="txt">nijor/theme</span> module makes controlling active themes incredibly simple. It exports two main helper functions: <span class="txt">autoTheme()</span> and <span class="txt">setTheme()</span>.
         </p>
 
     <code lang="js" shiki>
         import \{ autoTheme, setTheme } from "nijor/theme";
     </code>
 
+        <h2>1. Automatic Theme Control</h2>
         <p>
-            The <span class="txt">autoTheme()</span> function automatically applies the appropriate theme based on the browser or system preference.
-            If the browser is in dark mode, Nijor applies the styles defined in <span class="txt">&lt;style theme="dark"&gt;</span>. If the browser is in light mode, Nijor uses the default styles.
+            Call <span class="txt">autoTheme()</span> to automatically match the application theme to the user's system preference. If their OS is set to dark mode, Nijor applies the style rules defined under <span class="txt">theme="dark"</span>; otherwise, it falls back to the base styles.
         </p>
 
     <code lang="js" shiki>
         import \{ autoTheme } from "nijor/theme";
 
+        // Call during application bootstrap (e.g., in App.js)
         autoTheme();
     </code>
 
+        <h2>2. Manual Theme Toggling</h2>
         <p>
-            The <span class="txt">setTheme()</span> function manually sets the active theme.
+            Use <span class="txt">setTheme()</span> to programmatically switch themes. This overrides automatic detection and lets you toggle custom themes dynamically:
         </p>
 
     <code lang="js" shiki>
         import \{ setTheme } from "nijor/theme";
 
-        setTheme("dark");
-        setTheme("light");
-        setTheme("cherry");
+        setTheme("dark");   // Activate dark theme overrides
+        setTheme("dim");    // Activate dim theme overrides
+        setTheme("light");  // Force base theme (bypassing auto-detection)
     </code>
 
         <p>
-            Once a theme is set manually, <span class="txt">autoTheme()</span> no longer controls the theme.
-            To restore automatic theme handling, use <span class="txt">setTheme("auto")</span>.
+            To restore system-level automatic theme detection, simply pass <span class="txt">"auto"</span>:
         </p>
 
         <code lang="js" shiki>
             setTheme("auto");
         </code>
 
+        <h2>3. Theme Persistence</h2>
         <p>
-            The currently selected theme is stored in <span class="txt">localStorage</span>.
-            You can read it using :
+            Nijor automatically stores the currently active theme in the browser's local storage. This ensures the user's preference persists across page loads. You can read the active selection using:
         </p>
 
     <code lang="js" shiki>
-        const theme = window.localStorage.getItem("theme");
-    </code>
-
-        <p>
-            If no theme has been set manually, this returns <span class="txt">"auto"</span>.
-        </p>
-        <p>
-            Add the following code to <span class="txt">App.js</span>.
-        </p>
-
-    <code lang="js" shiki>
-        import \{ autoTheme } from "nijor/theme";
-        autoTheme();
+        const currentTheme = window.localStorage.getItem("theme");
     </code>
     </section>
 
     <section>
         <h1>Conditional Classes</h1>
         <p>
-            Nijor allows classes to be added conditionally using the <span class="txt">class:classname</span> syntax.
-            This syntax is used as an attribute on an element.
+            Nijor provides a elegant syntax to apply CSS classes conditionally using the <span class="txt">class:classname</span> attribute. 
+            A class is added to the element if the expression inside curly braces evaluates to a truthy value; otherwise, it is omitted.
         </p>
-        <p>
-            If the condition is true, the class is added to the element. If the condition is false, the class is not added.
-        </p>
+
+        <h3>Static Conditional Example</h3>
     <code lang="html" shiki>
         <template>
-            <button class:active="{isActive}">Save</button>
+            <button class:active="{isActive}">Save Changes</button>
         </template>
 
         <nscript>
@@ -145,38 +143,53 @@
         </nscript>
 
         <nstyle>
-            .active\{
-                color : #0099ff;
+            .active \{
+                color: #007bff;
+                font-weight: bold;
             }
         </nstyle>
     </code>
+
+        <h3>Reactive Conditional Example</h3>
         <p>
-            In this example, the class <span class="txt">active</span> is added only when <span class="txt">isActive</span> is true.
-        </p>
-        <p>
-            This also works with reactive variables.
+            This syntax integrates with Nijor's reactive state variables, allowing you to add and remove classes dynamically in response to state transitions.
         </p>
     <code lang="html" shiki>
         <template>
-            <button class:enabled="{$.enabled}" on:click="toggle()">Toggle</button>
+            <button class:enabled="{$.enabled}" on:click="toggle()">Toggle Power</button>
         </template>
 
         <nscript>
             $.enabled = false;
 
-            function toggle($) \{
+            export function toggle($) \{
                 $.enabled = !$.enabled;
             }
         </nscript>
 
         <nstyle>
-            .enabled\{
-                color : #0099ff;
+            .enabled \{
+                background-color: #28a745;
+                color: white;
             }
         </nstyle>
     </code>
+    </section>
+
+    <section>
+        <h1>CSS Processing: PostCSS & Tailwind CSS</h1>
         <p>
-            Here, the <span class="txt">active</span> class is added and removed automatically as the value of <span class="txt">$.enabled</span> changes.
+            Nijor features an integrated PostCSS architecture to process application stylesheets during the build step. 
+            You can extend this processing by registering plugins inside your project's <span class="txt">postcss.config.mjs</span> file.
+        </p>
+        <p>
+            By default, Nijor pre-configures and runs the following PostCSS plugins to keep your bundles optimized and modern:
+        </p>
+        <p><span class="txt">postcss-nested</span>: Write clean, nested style declarations.</p>
+        <p><span class="txt">autoprefixer</span>: Automatically add CSS vendor prefixes for broad browser compatibility.</p>
+        <p><span class="txt">cssnano</span>: Minify and compress compiled production CSS.</p>
+        <p>
+            <strong>Tailwind CSS Integration:</strong> Because Nijor compiles using standard PostCSS, integrating Tailwind CSS is extremely straightforward. Simply install Tailwind via Bun/NPM, add it as a plugin in your <span class="txt">postcss.config.mjs</span>, and define your content paths to scan <span class="txt">*.nijor</span> files.
         </p>
     </section>
 

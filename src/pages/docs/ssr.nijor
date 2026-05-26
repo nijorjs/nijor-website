@@ -1,50 +1,49 @@
 <head>
     <title>Server Side Rendering | Nijor</title>
-    <meta name="keywords" content="Nijor SSR, Nijor SSG, Server Side Rendering in Nijor">
-    <meta name="description" content="Learn about Server Side Rendering in Nijor.">
+    <meta name="keywords" content="Nijor SSR, Nijor SSG, Server Side Rendering, Static Site Generation"/>
+    <meta name="description" content="Learn about Nijor's high-performance static rendering mode. Master the configuration and understand hydration features.">
 </head>
 
 <body layout="docs">
     <section>
-        <h1>Server Side Rendering</h1>
+        <h1>Server-Side Rendering (SSR / SSG)</h1>
         <p>
-            Nijor provides a rendering mode labeled as Server Side Rendering (SSR), but its behavior is closer to Static Site Generation (SSG). <br><br>
-            Instead of rendering components on the server for every request, Nijor prebuilds pages into HTML files during the build process and serves them directly.
+            Nijor features an integrated rendering mode labeled as Server-Side Rendering (SSR). In practice, its behavior aligns closely with <strong>Static Site Generation (SSG)</strong>.
+        </p>
+        <p>
+            Instead of executing components on a server for every incoming request—which introduces computational cost and latency—Nijor pre-compiles and generates static HTML files during the build pipeline. These files are optimized, lightweight, and ready to be served directly from any global CDN or static file hosting service.
         </p>
 
+        <h2>Enabling Static Rendering Mode</h2>
         <p>
-            You can enable this mode by changing the build configuration in <span class="txt">nijor.config.js</span>:
+            You can enable this high-performance static generation mode inside your project's <span class="txt">nijor.config.js</span> file by updating the build mode configuration:
         </p>
 
     <code lang="js" shiki>
         export const build = \{
             mode: "ssr"
-        }
+        };
     </code>
 
+        <h2>How It Works Under the Hood</h2>
         <p>
-            This approach is intentional. Rendering components on every request can be computationally expensive, so Nijor avoids unnecessary server work by generating static HTML ahead of time.
+            This static architecture is a deliberate performance choice. By pre-building raw HTML ahead of time, Nijor ensures that search engine web crawlers receive fully structured content instantly (improving SEO), and end-users experience near-instant initial page load times.
+        </p>
+        <p>
+            Once the pre-rendered HTML file is loaded in the visitor's browser, client-side scripts execute to restore dynamic interactivity, enabling a highly responsive single-page experience.
         </p>
 
+        <h2>Important Build Limitations</h2>
         <p>
-            <strong>Note:</strong> SSR/SSG in Nijor only works during the production build using <span class="txt">nijor build</span>. It is not available in <span class="txt">nijor dev</span>, since prebuilding pages is computationally expensive and would slow down development.
+            <strong>Production Only:</strong> Static generation (SSR/SSG) runs exclusively during the production compilation phase (<span class="txt">nijor build</span>). It is deactivated during local development (<span class="txt">nijor dev</span>) to preserve rapid hot-reloading speeds, as compiling the entire site to static files on every file save would introduce unnecessary development overhead.
         </p>
 
+        <h2>Hydration & Development Status</h2>
         <p>
-            This limitation is temporary and will be improved in the future as the rendering system becomes more optimized.
+            Nijor's client-side hydration engine is actively evolving. While pre-built HTML renders correctly on initial load, fully synchronizing client-side state without re-running component bootstrapping is still being optimized.
         </p>
-
         <p>
-            Dynamic behavior is still supported on the client after the page loads, allowing applications to remain interactive while benefiting from fast initial load times.
-        </p>
-
-        <p>
-            Currently, hydration is still evolving. While the prebuilt HTML is served correctly, client-side hydration may not work reliably in all cases.
-            As a temporary workaround, components may re-run on page load, which can lead to redundant rendering.
-        </p>
-
-        <p>
-            This limitation is known and will be improved as Nijor’s rendering system matures.
+            As a temporary workaround, components may execute their logic again upon page load. This can occasionally lead to redundant rendering cycles, but ensures complete client-side functionality. Optimizing hydration to eliminate these redundant runs is a major item on our roadmap.
         </p>
     </section>
 </body>

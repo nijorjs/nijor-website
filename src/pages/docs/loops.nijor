@@ -1,68 +1,99 @@
 <head>
     <title>Loops | Nijor</title>
-    <meta name="keywords" content="Loops in Nijor, Nijor Loops"/>
-    <meta name="description" content="Loops in Nijor">
+    <meta name="keywords" content="Loops in Nijor, Nijor Loops, List Rendering, Array Iteration"/>
+    <meta name="description" content="Master dynamic list rendering in Nijor. Learn how to loop through arrays using n:loop and manage reactive lists.">
 </head>
 
 <body layout="docs">
 
     <section>
-        <h1>Loops</h1>
+        <h1>List Rendering (Loops)</h1>
         <p>
-            Nijor provides a simple way to render repeated content using the <span class="txt">n:loop</span> attribute.
-            Loops are useful when you want to render a list of items from an array. <br>
-            A loop must be declared on a parent element. This is usually a <span class="txt">div</span>, but any suitable element can be used. You can't add <span class="txt">id</span> attribute to the element. <br>
-            The <span class="txt">n:loop</span> attribute works together with two other attributes :
-            <span class="txt">source</span> and <span class="txt">var</span>. <br>
-            <span class="txt">source</span> refers to the array variable defined in <span class="txt">script</span>, and <span class="txt">var</span> defines the variable name used for each item during iteration.
+            Nijor provides a declarative and highly efficient mechanism to render lists of items or repeated HTML structures using the <span class="txt">n:loop</span> attribute.
+        </p>
+        <p>
+            When iterating through data, Nijor expects three core attributes :
+        </p>
+        <p>
+            <span class="txt">n:loop</span>: Declares that the target element represents a looping template.
+        </p>
+        <p>
+            <span class="txt">source</span>: Specifies the array variable defined inside your component's script.
+        </p>
+        <p>
+            <span class="txt">var</span>: Defines the name of the variable to represent the current item in the current iteration.
         </p>
     </section>
 
     <section>
-        <h1>Example</h1>
+        <h1>Basic Loop Example</h1>
+        <p>
+            A loop must always be declared on a wrapping parent container element (such as a <span class="txt">&lt;div&gt;</span>, <span class="txt">&lt;ul&gt;</span>, or a custom component container). 
+        </p>
+        <p>
+            <strong>Crucial Constraint:</strong> Do not add an <span class="txt">id</span> attribute to the element featuring the <span class="txt">n:loop</span> directive, as Nijor manages the identification of repeated nodes dynamically under the hood.
+        </p>
     <code lang="html" shiki>
-        <import name="house" source="@/components/houses.nijor"/>
+        <import name="house" source="@/components/house-card.nijor"/>
+        
         <template>
-            <div n:loop var="x" source="houses">
-                <house name="{x.name}" rent="₹{x.rent}" location="{x.location}"></house>
+            <div n:loop var="house" source="houses">
+                <house name="{house.name}" rent="₹{house.rent}" location="{house.location}"></house>
             </div>
         </template>
 
         <nscript>
             const houses = [
-                \{ name : "The Sky Mansion", rent: 62000, location: "Hengrabari, Guwahati" },
-                \{ name : "The Octagon Mansion", rent: 30000, location: "Ganeshguri, Guwahati" },
-                \{ name : "The Dragon Palace", rent: 45000, location: "Chacal, Guwahati" },
+                \{ name: "The Sky Mansion", rent: 62000, location: "Hengrabari, Guwahati" },
+                \{ name: "The Octagon Villa", rent: 30000, location: "Ganeshguri, Guwahati" },
+                \{ name: "The Dragon Palace", rent: 45000, location: "Kahilipara, Guwahati" },
             ];
         </nscript>
     </code>
     </section>
 
     <section>
-        <h1>With Reactive Source</h1>
+        <h1>Rendering with Reactive Lists</h1>
+        <p>
+            You can combine loops with reactive state by prefixing the array source with <span class="txt">$.</span>. 
+            This allows you to dynamically append, remove, or modify items inside the list, causing the loop to automatically re-render and reflect the updated array.
+        </p>
     <code lang="html" shiki>
-        <import name="house" source="@/components/houses.nijor"/>
+        <import name="house" source="@/components/house.nijor"/>
+        
         <template>
-            <div n:loop var="x" source="$.houses">
-                <house name="{x.name}" rent="₹{x.rent}" location="{x.location}"></house>
+            <div n:loop var="house" source="$.houses">
+                <house name="{house.name}" rent="₹{house.rent}" location="{house.location}"></house>
             </div>
-            <button on:click="more()">Load More</button>
+            <button on:click="loadMore()">Load More Houses</button>
         </template>
 
         <nscript>
             $.houses = [
-                \{ name : "The Sky Mansion", rent: 62000, location: "Hengrabari, Guwahati" },
-                \{ name : "The Octagon Mansion", rent: 30000, location: "Ganeshguri, Guwahati" },
-                \{ name : "The Dragon Palace", rent: 45000, location: "Chacal, Guwahati" },
+                \{ name: "The Sky Mansion", rent: 62000, location: "Hengrabari, Guwahati" },
+                \{ name: "The Octagon Villa", rent: 30000, location: "Ganeshguri, Guwahati" },
+                \{ name: "The Dragon Palace", rent: 45000, location: "Kahilipara, Guwahati" },
             ];
 
-            async function more($)\{
-                const moreHouses = await fetch(...);
-                $.houses = [... $.houses, moreHouses]; // The entire loop would be rerendered, even those entries which didn't change
+            export async function loadMore($) \{
+                const response = await fetch('/api/more-houses');
+                const nextHouses = await response.json();
+                
+                // Re-assigning the reactive array triggers a direct template refresh
+                $.houses = [...$.houses, ...nextHouses];
             }
-
         </nscript>
     </code>    
+    </section>
+
+    <section>
+        <h1>Loop Performance Characteristics</h1>
+        <p>
+            When a reactive loop's array is re-assigned (e.g., using array spreading), Nijor's current rendering system re-evaluates and updates the entire list container template. 
+        </p>
+        <p>
+            While this ensures robust synchronization between your JavaScript state and the DOM, keep it in mind when rendering extremely large lists (e.g., thousands of items), where optimizing the frequency of array updates will ensure smooth interface rendering.
+        </p>
     </section>
 
 </body>

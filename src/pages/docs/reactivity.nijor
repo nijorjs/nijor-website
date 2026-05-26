@@ -1,38 +1,30 @@
 <head>
     <title>Reactivity | Nijor</title>
-    <meta name="keywords" content="Reactivity in Nijor, Nijor Reactivity, Reactive Variables"/>
-    <meta name="description" content="Reactivity in Nijor">
+    <meta name="keywords" content="Reactivity in Nijor, Nijor Reactivity, Reactive State, Bindings, Refs"/>
+    <meta name="description" content="Learn about Nijor's unique reactivity model. Master reactive variables, derived state, DOM refs, and two-way data bindings.">
 </head>
 
 <body layout="docs">
 
     <section>
-        <h1>Reactivity</h1>
+        <h1>Reactivity in Nijor</h1>
         <p>
-            Reactive variables are variables that trigger updates when their values change.
-            They are useful when part of the UI should respond automatically to state changes.
+            Reactivity is the framework's capability to automatically update parts of the user interface when underlying application state changes.
         </p>
         <p>
-            In Nijor, reactive variables are declared differently from normal JavaScript variables.
-            They do not need to be initialized using <span class="txt">let</span> or <span class="txt">const</span>.
+            Nijor features a highly performant and intuitive reactivity model. Reactive variables are declared and managed using a special prefix, completely bypassing the need for standard JavaScript variable declarations like <span class="txt">let</span> or <span class="txt">const</span>.
         </p>
     </section>
 
     <section>
-        <h1>Declaring Reactive Variables</h1>
+        <h1>Declaring Reactive State</h1>
         <p>
-            A reactive variable is declared using the <span class="txt">$.</span> symbol.
-            The syntax is:
-        </p>
-    <code lang="js" shiki>
-        $.varname = value;
-    </code>
-        <p>
-            Example:
+            You declare a reactive variable using the prefix <span class="txt">$.</span> inside your <span class="txt">&lt;script&gt;</span> block. 
+            Once declared, you can render this state in your template using curly brace interpolation <span class="txt">\{$.variableName}</span>.
         </p>
     <code lang="html" shiki>
         <template>
-            <h1>Count : {$.count}</h1>
+            <h1>Counter : \{$.count}</h1>
         </template>
 
         <nscript>
@@ -40,72 +32,66 @@
         </nscript>
     </code>
         <p>
-            In this example, <span class="txt">$.count</span> is a reactive variable.
-            When its value changes, Nijor can update the parts of the component that depend on it.
+            Whenever the value of <span class="txt">$.count</span> changes, Nijor pinpoints the text node and updates the DOM directly.
         </p>
     </section>
 
     <section>
-        <h1>Updating Reactive Variables</h1>
+        <h1>Updating Reactive State</h1>
         <p>
-            Reactive variables can be updated by assigning a new value to them.
+            To update reactive state, assign a new value to the reactive variable. 
+        </p>
+        <p>
+            <strong>Important Event Signature Rule:</strong> Any event handler function in your <span class="txt">&lt;script&gt;</span> that modifies reactive state must accept the reactivity context <span class="txt">$</span> as its last parameter. When calling the event handler from the template, you do not pass the <span class="txt">$</span> argument explicitly; Nijor's compiler injects it automatically at runtime.
         </p>
     <code lang="html" shiki>
         <template>
-            <h1>Count : {$.count}</h1>
+            <h1>Counter : \{$.count}</h1>
             <button on:click="increment()">Increase</button>
-            <button on:click="decrease()">Decrease</button>
+            <button on:click="decrement()">Decrease</button>
         </template>
 
         <nscript>
             $.count = 0;
 
-            function increment($) \{
+            export function increment($) \{
                 $.count++;
             }
 
-            function decrement($) \{
+            export function decrement($) \{
                 $.count--;
             }
         </nscript>
     </code>
-        <p>
-            You can't use <span class="txt">$</span> directly inside inline-event functions ; you need to pass $ as the last argument in the function signature but don't have to pass it while calling from inline-events.
-        </p>
     </section>
 
     <section>
-        <h1>Derived Reactive Variables</h1>
+        <h1>Derived Reactive State (Computed Properties)</h1>
         <p>
-            Nijor also supports derived reactive variables.
-            These are reactive values whose value depends on other reactive variables.
+            Derived reactive variables are values that depend entirely on other reactive state. Nijor automatically tracks these dependencies and recalculates the derived variable whenever its parent state changes.
         </p>
         <p>
-            A derived reactive variable is declared using the <span class="txt">_ :</span> label.
+            You declare derived state using a JavaScript label with a colon prefix <span class="txt">_ :</span> followed by the assignment:
         </p>
     <code lang="js" shiki>
         $.count = 0;
         _ : $.double = $.count * 2;
     </code>
         <p>
-            In this example, <span class="txt">$.double</span> is derived from <span class="txt">$.count</span>.
-            Whenever the value of <span class="txt">$.count</span> changes, Nijor automatically recalculates <span class="txt">$.double</span>.
-        </p>
-        <p>
-            Any part of the UI that references <span class="txt">$.double</span> will also update automatically when its value changes.
+            In the example below, <span class="txt">$.double</span> depends on <span class="txt">$.count</span>. Whenever <span class="txt">$.count</span> increases or decreases, <span class="txt">$.double</span> is recalculated and any bound DOM nodes automatically refresh.
         </p>
     <code lang="html" shiki>
         <template>
-            <h2>Count: {$.count}</h2>
-            <h2>Double: {$.double}</h2>
-            <button on:click="increment()">Increase</button>
+            <h2>Original Count : \{$.count}</h2>
+            <h2>Doubled Value : \{$.double}</h2>
+            <button on:click="increment()">Add 1</button>
         </template>
 
         <nscript>
             $.count = 0;
             _ : $.double = $.count * 2;
 
-            function increment($) \{
+            export function increment($) \{
                 $.count++;
             }
         </nscript>
@@ -113,45 +99,41 @@
     </section>
 
     <section>
-    <h1>n:ref</h1>
+        <h1>DOM References: <span class="txt">n:ref</span></h1>
         <p>
-            Nijor provides the <span class="txt">n:ref</span> attribute for creating references to DOM elements.
-            This is useful when you need direct access to an input, select, or similar form element inside your component logic.
+            If you need to access raw DOM nodes directly (e.g., to focus an input, trigger video playback, or read a form element's current property), use the <span class="txt">n:ref</span> attribute.
         </p>
-        <p>When this attribute is used, <span class="txt">$.varname</span> becomes a reference to the DOM node of that element.</p>
+        <p>
+            When applied, Nijor registers the DOM element directly onto your reactivity context as <span class="txt">$.varName</span>:
+        </p>
 
     <code lang="html" shiki>
         <template>
-            <input type="text" nref="{$.username}" />
+            <input type="text" nref="{$.username}" placeholder="Enter name" />
             <button on:click="showValue()">Show Value</button>
         </template>
 
         <nscript>
-            function showValue($) \{
-                console.log($.username.value);
+            export function showValue($) \{
+                console.log($.username.value); // Access the native DOM node
             }
         </nscript>
     </code>
 
-        <p>
-            In this example, <span class="txt">$.username</span> refers to the input element itself.
-            This makes it possible to access properties such as <span class="txt">$.username.value</span>.
-        </p>
-
-        <p>The same pattern also works with other form elements such as <span class="txt">select</span>.</p>
+        <p>This works seamlessly with other elements, such as dropdown selects:</p>
 
     <code lang="html" shiki>
         <template>
             <select nref="{$.theme}">
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
+                <option value="light">Light Mode</option>
+                <option value="dark">Dark Mode</option>
             </select>
 
             <button on:click="printTheme()">Print Theme</button>
         </template>
 
         <nscript>
-            function printTheme($) \{
+            export function printTheme($) \{
                 console.log($.theme.value);
             }
         </nscript>
@@ -159,47 +141,53 @@
     </section>
 
     <section>
-        <h1>n:bind</h1>
+        <h1>Two-Way Data Binding: <span class="txt">n:bind</span></h1>
         <p>
-            Nijor provides the <span class="txt">n:bind</span> attribute for binding user input to a reactive variable.
-            It can be used on <span class="txt">input</span>, <span class="txt">textarea</span>, and elements with <span class="txt">contenteditable="true"</span>.
+            To bind a user input's value directly to a reactive state variable in real time, use the <span class="txt">n:bind</span> attribute. 
+            This sets up a two-way sync between your DOM element and your reactive state:
         </p>
-        <p>When a bound element changes, the value of the reactive variable is updated in real time.</p>
+        <p>
+            It is fully supported on <span class="txt">input</span> tags, <span class="txt">textarea</span> elements, and any container containing the <span class="txt">contenteditable="true"</span> property.
+        </p>
 
     <code lang="html" shiki>
         <template>
-            <h1>নমস্কাৰ {$.name || "Person"} !</h1>
-            <input nbind="{$.name}" />
+            <h1>Welcome, \{$.name || "Stranger"}!</h1>
+            <input nbind="{$.name}" placeholder="Type your name..." />
         </template>
     </code>
 
         <p>
-            In this example, typing into the input updates <span class="txt">$.name</span> immediately.
-            Since the heading depends on <span class="txt">$.name</span>, it also updates automatically.
+            As you type inside the input, <span class="txt">$.name</span> is updated dynamically, causing the welcome header to immediately reflect the typed text.
         </p>
 
-        <p>The same pattern works with other supported elements.</p>
-
+        <h3>Binding to Textareas & Contenteditable Elements</h3>
     <code lang="html" shiki>
         <template>
-            <textarea nbind="{$.message}"></textarea>
-            <p>{$.message}</p>
+            <textarea nbind="\{$.message}"></textarea>
+            <p>Characters: \{$.message.length}</p>
         </template>
     </code>
 
     <code lang="html" shiki>
         <template>
-            <div contenteditable="true" nbind="{$.text}"></div>
-            <p>{$.text}</p>
+            <div contenteditable="true" nbind="\{$.text}"></div>
+            <p>Raw text: \{$.text}</p>
         </template>
     </code>
     </section>
 
     <section>
-        <h1>Notes</h1>
-        <p>The <span class="txt">$</span> variable is reserved by Nijor for reactivity and internal framework behavior.</p>
-        <p>Since reactive variables are declared through <span class="txt">$</span>, they should not be redefined manually.</p>
-        <p>Reactivity in Nijor is still evolving, so behavior may change as the framework develops.</p>
+        <h1>Key Rules & Guidelines</h1>
+        <p>
+            The global prefix <span class="txt">$</span> is reserved exclusively for Nijor's reactivity system. Never re-declare or override the <span class="txt">$</span> variable manually inside your components.
+        </p>
+        <p>
+            Always ensure your state-modifying functions receive the <span class="txt">$</span> argument in their function signature.
+        </p>
+        <p>
+            Reactivity variables do not require initialization using <span class="txt">let</span>, <span class="txt">var</span>, or <span class="txt">const</span>; simply write <span class="txt">$.myVar = value</span> directly inside your component scripts.
+        </p>
     </section>
 
 </body>

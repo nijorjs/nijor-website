@@ -5,12 +5,17 @@
             <p>Build modern web applications with reusable components, file-based routing, reactivity, and a clean developer experience.</p>
             <div class="actions">
                 <a n:route="/docs" class="primary-btn">Get Started</a>
-                <!-- <a n:route="/docs/introduction" class="secondary-btn">Read Docs</a> -->
             </div>
         </div>
     </div>
 </body>
 
+<script>
+    $.count = 0;
+    export function add($){
+        $.count++;
+    }
+</script>
 <style>
     .hero {
         min-height: calc(100vh - 6rem);
@@ -67,8 +72,7 @@
         margin-top: 36px;
     }
 
-    .primary-btn,
-    .secondary-btn {
+    .primary-btn{
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -90,17 +94,6 @@
     .primary-btn:hover {
         background-color: #00A2E8;
         transform: translateY(-2px);
-    }
-
-    .secondary-btn {
-        color: #111827;
-        background-color: white;
-        border: 1px solid #d9d9d9;
-    }
-
-    .secondary-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: rgba(0, 0, 0, 0.08) 0px 8px 20px;
     }
 
     .hero-logo {
@@ -148,11 +141,5 @@
 
     p {
         color: #d3d7de;
-    }
-
-    .secondary-btn {
-        background-color: rgb(37, 37, 40);
-        border: 1px solid rgb(58, 58, 62);
-        color: white;
     }
 </style>

@@ -1,70 +1,125 @@
 <head>
     <title>Plugins | Nijor</title>
-    <meta name="keywords" content="Plugins in Nijor, Nijor Plugins, Nijor Plugin"/>
-    <meta name="description" content="Learn how plugins work in Nijor and how they let you define custom compile-time behavior."/>
+    <meta name="keywords" content="Plugins in Nijor, Nijor Plugins, Compiler Plugins, Extensibility"/>
+    <meta name="description" content="Master compiler-level plugins in Nijor. Learn how to extend compilation behavior and build custom templates or logic hooks.">
 </head>
 <body layout="docs">
 
     <section>
-        <h1>Plugins</h1>
-        <p>Plugins in Nijor let you define custom behavior at compile time. Many built-in features such as <span class="txt">n:loop</span>, <span class="txt">on:event</span>, and reactive variables are internally powered by plugins, making Nijor flexible and modular.</p>
+        <h1>Compiler Plugins</h1>
+        <p>
+            Plugins are a powerful feature in Nijor that allow you to define custom behavior at compile time. 
+            In fact, many core framework features—such as <span class="txt">n:loop</span> list rendering, inline <span class="txt">on:event</span> handling, and reactivity bindings—are built internally as compiler plugins. This design makes Nijor highly modular and extensible.
+        </p>
     </section>
 
     <section>
         <h1>Using Plugins</h1>
-        <p>Before creating your own plugins, you can use existing ones by importing them into <span class="txt">nijor.config.js</span> and adding them to the <span class="txt">plugins</span> array.</p>
+        <p>
+            To use a plugin, import its factory function and add it to the <span class="txt">plugins</span> array inside your project's <span class="txt">nijor.config.js</span> file:
+        </p>
 
     <code lang="js" shiki>
-        import plugin1 from "@/plugins/plugin1.js"
-        import plugin2 from "@/plugins/plugin2.js"
+        import compressPlugin from "@/plugins/compress.js";
+        import analyticsPlugin from "@/plugins/analytics.js";
 
-        export const plugins = [ plugin1(), plugin2() ];
+        export const plugins = [ 
+            compressPlugin(), 
+            analyticsPlugin() 
+        ];
     </code>
 
-        <p>Nijor will run these plugins during compilation in the order they appear in the array.</p>
-
+        <p>
+            During the build phase, Nijor executes these plugins sequentially in the order they are defined inside the array.
+        </p>
     </section>
+    
     <section>
-        <h1>Plugin Development</h1>
-        <p>A Nijor plugin exports a default async function. This function receives a single object containing <span class="txt">document</span>, <span class="txt">scope</span>, <span class="txt">props</span>, <span class="txt">scripts</span>, <span class="txt">filename</span>, and <span class="txt">module_type</span>.</p>
+        <h1>Developing Custom Plugins</h1>
+        <p>
+            A Nijor compiler plugin is structured as an asynchronous factory function. It returns a secondary asynchronous function that receives the active compilation context and yields the modified component content and scripts.
+        </p>
 
     <code lang="js" shiki>
-        export async function plugin(properties)\{
+        export default function customPlugin(pluginOptions) \{
 
             return async function (\{ document, scope, props, scripts, filename, module_type }) \{
-                // Plugin logic
+                // Custom compilation and DOM transformation logic goes here
 
                 return \{
-                    name: "Plugin Name",
-                    body: document.body.innerHTML,
-                    ...scripts
+                    name: "Custom Plugin Name",
+                    body: document.body.innerHTML, // Yield the modified HTML
+                    ...scripts                     // Yield the updated scripts
                 };
-            }
+            };
         
         }
     </code>
+    </section>
 
-        <h1>Plugin Arguments</h1>
-        <p>The plugin function receives the parsed <span class="txt">document</span>, the current <span class="txt">scope</span>, component <span class="txt">props</span>, the generated <span class="txt">scripts</span> object, the current <span class="txt">filename</span>, and the <span class="txt">module_type</span>.</p>
-        <p>The <span class="txt">module_type</span> can be component, layout, page.</p>
-        <p>The <span class="txt">scope</span> is a random string unique to a particular component, layout or page.</p>
-        <p>The <span class="txt">scripts</span> object contains three properties: <span class="txt">main</span>, <span class="txt">global</span>, and <span class="txt">defer</span>.</p>
-        <p>Do not overwrite <span class="txt">scripts.main</span> directly unless absolutely necessary. Prefer appending to it instead :</p>
+    <section>
+        <h1>Compilation Context Arguments</h1>
+        <p>
+            The plugin's execution handler receives a highly rich context object containing:
+        </p>
+            <p>
+                <span class="txt">document</span>: A JSDOM instance representing the component's parsed HTML DOM tree. You can use standard DOM APIs (e.g., <span class="txt">querySelectorAll</span>, <span class="txt">setAttribute</span>) to query and modify markup directly.
+            </p>
+            <p>
+                <span class="txt">scope</span>: A unique, randomized string identifier generated for the current component, layout, or page. This is useful for namespacing CSS or logic.
+            </p>
+            <p>
+                <span class="txt">props</span>: An array containing the parsed property attributes defined on the component's opening tag.
+            </p>
+            <p>
+                <span class="txt">scripts</span>: An object storing the generated JavaScript segments (see below).
+            </p>
+            <p>
+                <span class="txt">filename</span>: The absolute path of the file currently being compiled.
+            </p>
+            <p>
+                <span class="txt">module_type</span>: A string designating the current module classification. The value can be <span class="txt">"component"</span>, <span class="txt">"layout"</span>, or <span class="txt">"page"</span>.
+            </p>
+
+        <h2>Manipulating Component Scripts</h2>
+        <p>
+            The <span class="txt">scripts</span> object contains three primary properties: <span class="txt">main</span>, <span class="txt">global</span>, and <span class="txt">defer</span>.
+        </p>
+        <p>
+            <strong>Best Practice:</strong> Avoid overwriting <span class="txt">scripts.main</span> or other script properties directly. Because they house compiler-generated bootstrap logic, overwriting them will break compilation output. Instead, always append your modifications:
+        </p>
     <code lang="js" shiki>
-        scripts.main += "// additional code"
+        // Safely inject custom script behavior
+        scripts.main += "// Additional custom compiler logic goes here;";
+    </code>
+    </section>
+
+    <section>
+        <h1>Under the Hood: Compiler Mechanics</h1>
+        <p>
+            To build robust plugins, it is helpful to understand how the Nijor compiler transforms a <span class="txt">.nijor</span> component.
+            Internally, components are compiled into a structural initialization sequence:
+        </p>
+
+    <code lang="js" shiki>
+        // Injected inside scripts.global
+        const myComponent = new component(templateFn, callbackFn);
     </code>
 
-        <p>Since these fields contain generated script code, replacing them carelessly may break compilation output.</p>
-
-        <h2>Internal Compilation</h2>
-        <p>Internally, a <span class="txt">.nijor</span> file is compiled into a structure similar to this:</p>
-
-    <code lang="js" shiki>
-        // scripts.global
-        const x = new component(templateFn, callbackFn);
-    </code>
-
-        <p><span class="txt">scripts.global</span> contains top-level code such as component initialization. <span class="txt">templateFn</span> returns the template output. Code written inside the <span class="txt">&lt;script&gt;</span> tag is placed inside <span class="txt">templateFn</span>, except for imports, which are moved to the top level. <span class="txt">callbackFn</span> runs immediately after <span class="txt">templateFn</span> renders the template, including child component rendering. <span class="txt">scripts.defer</span> is injected inside <span class="txt">templateFn</span>.</p>
-
+        <h3>The Anatomy of Compiled Components</h3>
+        <ul>
+            <p>
+                <strong><span class="txt">scripts.global</span></strong>: Contains top-level declaration code, such as registering component initializers and importing external dependency scripts.
+            </p>
+            <p>
+                <strong><span class="txt">templateFn</span></strong>: A function that runs whenever the template needs to render. It executes the code written inside your component's original <span class="txt">&lt;script&gt;</span> tag (except imports, which are lifted to the top level) and returns the generated markup.
+            </p>
+            <p>
+                <strong><span class="txt">callbackFn</span></strong>: Executes immediately after the <span class="txt">templateFn</span> mounts the component's markup to the DOM, facilitating child component bootstrapping.
+            </p>
+            <p>
+                <strong><span class="txt">scripts.defer</span></strong>: Dynamic script blocks that are executed inline inside the <span class="txt">templateFn</span> lifecycle scope.
+            </p>
+        </ul>
     </section>
 </body>

@@ -160,7 +160,7 @@
     import { route } from '@/data/state.js';
     import { setTheme } from 'nijor/theme';
 
-    function ChangeTheme() {
+    export function ChangeTheme() {
         document.body.style.transition = "0.3s";
         let Theme = window.localStorage.getItem('theme');
 
@@ -192,7 +192,7 @@
 
     route.subscribe(r => $.route = getRoute(r));
 
-    function open() {
+    export function open() {
         const sidenav = document.getElementById('sidenav-mobile');
         sidenav.style.width = "75%";
     }

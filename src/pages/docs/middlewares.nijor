@@ -1,51 +1,70 @@
 <head>
     <title>Middleware | Nijor</title>
-    <meta name="keywords" content="Middlewares in Nijor, Nijor Middlewares, Nijor Middleware"/>
-    <meta name="description" content="Middlewares in Nijor">
+    <meta name="keywords" content="Middlewares in Nijor, Nijor Middlewares, Server-side Middleware, Authentication"/>
+    <meta name="description" content="Learn how server-side middlewares work in Nijor. Intercept requests, validate credentials, and secure your routes.">
 </head>
 
 <body layout="docs">
 
     <section>
-        <h1>Middleware</h1>
-        <p>Middlewares run on the server side.They allow you to intercept incoming requests before the route is handled.</p>
-        <p>Middleware is useful for tasks such as authentication, access control, request filtering, and other server-side checks.</p>
+        <h1>Server-Side Middleware</h1>
+        <p>
+            Middlewares run strictly on the server side. They intercept incoming HTTP requests before the request reaches the page routing logic or API endpoint.
+        </p>
+        <p>
+            Middleware is essential for handling global or route-specific operations, such as user authentication, access control lists (ACLs), request logging, request filtering, and CORS header management.
+        </p>
     </section>
 
     <section>
         <h1>Registering Middleware</h1>
-        <p>Middlewares are registered in the <span class="txt">nijor.config.js</span> file.</p>
+        <p>
+            To activate middleware in a Nijor application, import your middleware handlers and register them inside the <span class="txt">middlewares</span> array within the <span class="txt">nijor.config.js</span> configuration file:
+        </p>
 
     <code lang="js" shiki>
         import auth from "@/middlewares/auth.js";
+        
         // ...
-        export const middlewares = [auth()];
+        export const middlewares = [ auth() ];
         // ...
     </code>
 
-        <p>Nijor runs these middlewares on the server for incoming requests.</p>
+        <p>
+            Nijor automatically executes registered middlewares sequentially for every incoming server request.
+        </p>
     </section>
 
     <section>
         <h1>Middleware Structure</h1>
-        <p>A middleware is usually written as a function that returns an async handler.The handler receives <span class="txt">req</span>, <span class="txt">res</span>, and <span class="txt">next</span>.</p>
+        <p>
+            A Nijor middleware is typically structured as a factory function that returns an asynchronous handler. The returned handler receives three core arguments:
+        </p>
+        <p><span class="txt">req</span>: The native Node.js/Bun server request object.</p>
+        <p><span class="txt">res</span>: The native Node.js/Bun server response object.</p>
+        <p><span class="txt">next</span>: A callback function used to pass control flow to the next middleware in line.</p>
 
     <code lang="js" shiki>
-        function middleware(opts) \{
+        function customMiddleware(options) \{
             return async function(req, res, next) \{
-                // middleware logic
+                // Custom server-side processing goes here
+                
+                // Call next() to allow execution to proceed
                 next();
-            }
+            };
         }
     </code>
 
-        <p>Call <span class="txt">next()</span> to pass control to the next middleware or continue request processing.</p>
+        <p>
+            You must call <span class="txt">next()</span> to pass control forward. If you do not call <span class="txt">next()</span>, the request will hang indefinitely unless you manually end the response via the <span class="txt">res</span> object.
+        </p>
     </section>
 
     <section>
-        <h1>Use Cases</h1>
-        <p>Middleware can be used to protect routes, validate requests, or intercept requests before they reach the page or endpoint.</p>
-        <p>A common use case is checking cookies to prevent unauthorized access to protected routes.</p>
+        <h1>Use Case: Route Authentication Guard</h1>
+        <p>
+            A common use case for server-side middleware is validating request tokens (e.g., from cookies or headers) to prevent unauthorized access to private pages.
+        </p>
 
     <code lang="js" shiki>
         function auth() \{
@@ -54,25 +73,34 @@
 
                 if (!token) \{
                     res.statusCode = 401;
-                    res.end("Unauthorized");
-                    return;
+                    res.end("Unauthorized: Missing or invalid token");
+                    return; // Prevent next() from executing
                 }
 
+                // If authorized, continue request execution
                 next();
-            }
+            };
         }
     </code>
     </section>
 
     <section>
-        <h1>Intercepting Requests</h1>
-        <p>Since middleware runs before the request is completed, it can intercept requests and decide what should happen next.</p>
-        <p>A middleware may allow the request to continue, modify the response, or stop the request entirely.</p>
+        <h1>Request Interception & Termination</h1>
+        <p>
+            Because middleware executes before the page or api response begins compiling, it holds full authority over the request lifecycle. A middleware can decide to:
+        </p>
+        <ol>
+            <p><strong>Allow the request:</strong> Perform a check or enrich the request context, then trigger <span class="txt">next()</span>.</p>
+            <p><strong>Redirect the request:</strong> Modify headers (such as "Location") and complete the response immediately.</p>
+            <p><strong>Terminate the request:</strong> Respond with an error code (e.g., '401 Unauthorized' or '403 Forbidden') and call <span class="txt">res.end()</span>, short-circuiting downstream operations.</p>
+        </ol>
     </section>
 
     <section>
-        <h1>Note</h1>
-        <p>It is recommended to keep all your middlewares in separate files inside the <span class="txt">src/middleares</span> directory and import them in the <span class="txt">nijor.config.js</span>.</p>
+        <h1>Best Practices</h1>
+        <p>
+            To keep your project structure clean and manageable, we recommend keeping each middleware in its own file inside the dedicated <span class="txt">src/middlewares</span> directory, importing them into your central <span class="txt">nijor.config.js</span> only when needed.
+        </p>
     </section>
 
 </body>

@@ -3,5 +3,12 @@
   "private": true,
   "dependencies": {
     "shiki": "^4.0.1"
+  },
+  "devDependencies": {
+    "nijor": "^6.2.0"
+  },
+  "scripts": {
+    "dev" : "nijor dev",
+    "build" : "nijor build"
   }
 }

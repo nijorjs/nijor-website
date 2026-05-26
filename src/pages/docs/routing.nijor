@@ -1,68 +1,208 @@
 <head>
     <title>Routing | Nijor</title>
-    <meta name="keywords" content="Routing in Nijor, Nijor Routing, Nijor Router"/>
-    <meta name="description" content="Routing in Nijor">
+    <meta name="keywords" content="Routing in Nijor, Nijor Routing, Nijor Router, File-based Routing"/>
+    <meta name="description" content="Learn how file-based routing, parameterized pages, dynamic layouts, and fast client-side navigation work in Nijor.">
 </head>
 
 <body layout="docs">
 
     <section>
-        <h1>Routing</h1>
+        <h1>Routing in Nijor</h1>
         <p>
-            Nijor uses file-based routing.
-            Routes are automatically generated from the files inside the <span class="txt">src/pages</span> directory.
-            Each <span class="txt">.nijor</span> file inside this directory becomes a route in your application.
-            This approach removes the need to manually configure routes.
+            Nijor utilizes a modern <strong>file-based routing system</strong>. 
+            Routes are automatically generated based on the file and folder hierarchy located inside the <span class="txt">src/pages</span> directory.
+            Each <span class="txt">.nijor</span> file inside this folder compiles into a distinct application route.
+        </p>
+        <p>
+            This declarative, convention-over-configuration model eliminates the need to manually register, configure, or maintain a centralized routing file.
         </p>
     </section>
 
     <section>
-        <h1>Understanding App.js</h1>
+        <h1>Basic Routing</h1>
         <p>
-            <span class="txt">src/App.js</span> is the entry point of a Nijor application.
-            It is not limited to routing. Nijor applications can also be written without using the router.
+            Every standard file in the <span class="txt">src/pages</span> directory maps directly to a URL route path:
         </p>
-
-        <h2>Without Routing</h2>
-        <p>
-            If your application does not use routing, you can directly run a Nijor component from <span class="txt">App.js</span>. 
-            In that case, replace <span class="txt">&lt;div id="app"&gt;&lt;/div&gt;</span> in <span class="txt">index.html</span> with <span class="txt">&lt;app&gt;&lt;/app&gt;</span>.
-        </p>
-    <code lang="js" shiki>
-        import App from "@/App.nijor";
-
-        (async () => await App.run('app', 1))();
+    <code lang="txt" shiki>
+        src/pages/
+            index.nijor
+            about.nijor
     </code>
         <p>
-            In this example, the <span class="txt">App</span> component is rendered directly and all other components are rendered inside the App component.
+            This structure generates the following URL endpoints:
         </p>
-
-        <h2>How Components Run</h2>
-        <p>
-            Internally, all Nijor components are rendered in this way.
-            Every compiled Nijor component exposes a <span class="txt">run()</span> method.
-        </p>
-        <p>
-            The <span class="txt">run()</span> method takes two arguments:
-        </p>
-        <p>
-            <span class="txt">name</span> is the component name to target, and <span class="txt">num</span> specifies how many matching elements should be replaced.
-        </p>
-    <code lang="js" shiki>
-        Component.run(name, num);
+    <code lang="txt" shiki>
+        index.nijor  -> / (Home Page)
+        about.nijor  -> /about
     </code>
         <p>
-            The <span class="txt">name</span> argument exists because the same component can be imported into different pages using different names. <br>
-            The <span class="txt">num</span> argument tells Nijor how many occurrences of that component should be replaced. <br>
+            If a visitor navigates to a URL that does not map to a page, Nijor will automatically render the fallback error page located at <span class="txt">src/pages/404.nijor</span>.
+        </p>
+    </section>
+
+    <section>
+        <h1>Nested Routing</h1>
+        <p>
+            Creating subdirectories inside <span class="txt">src/pages</span> naturally organizes your application into nested paths and route structures:
+        </p>
+    <code lang="txt" shiki>
+        src/pages/
+            blog/
+                index.nijor
+                [slug].nijor
+    </code>
+        <p>
+            This directory structure compiles into the following nested routes:
+        </p>
+    <code lang="txt" shiki>
+        blog/index.nijor   -> /blog
+        blog/[slug].nijor  -> /blog/:slug
+    </code>
+    </section>
+
+    <section>
+        <h1>Parameterized (Dynamic) Routing</h1>
+        <p>
+            Dynamic paths are defined by wrapping a parameter name in square brackets <span class="txt">[paramName]</span> inside the filename.
+        </p>
+    <code lang="txt" shiki>
+        src/pages/products/[id]/[name].nijor
+    </code>
+        <p>
+            This route matches dynamic paths such as <span class="txt">/products/123/phone</span>. 
+            Dynamic parameters are made available to the page through the <span class="txt">params</span> attribute in the <span class="txt">&lt;template&gt;</span> block (unlike components which use props).
+        </p>
+    <code lang="html" shiki>
+        <template params="\{ id, name }">
+            <h1>Product: \{name}</h1>
+            <p>Product ID: \{id}</p>
+            <button on:click="buy('\{id}')">Purchase {name}</button>
+        </template>
+
+        <nscript>
+            export function buy(id) \{
+                alert("Purchasing product: " + id);
+            }
+        </nscript>
+    </code>
+        <p>
+            Route parameters can be accessed directly in the template and are available inside your <span class="txt">&lt;script&gt;</span> scope. However, do not reference route parameters directly inside inline event function signatures; instead, pass them as arguments explicitly.
+        </p>
+    </section>
+
+    <section>
+        <h1>Layouts</h1>
+        <p>
+            Layouts define the shared, structural shell used across different pages. Common layout elements include navigation bars, sidebars, headers, and footers.
         </p>
         <p>
-            In normal application development, you usually do not need to work with these details directly.
-            They are handled internally by the compiler.
+            Layouts are stored in the <span class="txt">src/layouts</span> folder. Every Nijor application must have a default layout at <span class="txt">src/layouts/default.nijor</span>, which wraps every page by default.
+        </p>
+        <p>
+            Layouts identify where the dynamic page content should be injected using the special <span class="txt">n:slot</span> attribute.
+        </p>
+        
+        <h3>Example Layout : <span class="txt">src/layouts/default.nijor</span></h3>
+    <code lang="html" shiki>
+        <template>
+            <nav>
+                <a nroute="/">Home</a> | 
+                <a nroute="/about">About Us</a>
+            </nav>
+
+            <!-- Page content is loaded inside the slot below -->
+            <div n:slot></div>
+        </template>
+    </code>
+        
+        <p>
+            A page can specify a custom layout by adding the <span class="txt">layout</span> attribute to its <span class="txt">&lt;template&gt;</span>:
+        </p>
+    <code lang="html" shiki>
+        <template layout="dashboard">
+            <h1>Welcome to the Admin Portal</h1>
+        </template>
+    </code>
+        <p>
+            This snippet instructs Nijor to render the page inside <span class="txt">src/layouts/dashboard.nijor</span>. If the layout attribute is omitted, Nijor defaults back to <span class="txt">default.nijor</span>.
+        </p>
+    </section>
+
+    <section>
+        <h1>Client-Side Navigation</h1>
+        <p>
+            To enable smooth, single-page application (SPA) transitions without reloading the page, use the <span class="txt">n:route</span> attribute on your anchor tags. 
+            Standard <span class="txt">href</span> attributes still work, but they trigger a full browser page refresh.
+        </p>
+    <code lang="html" shiki>
+        <a nroute="/dashboard">Dashboard</a> <!-- Smooth SPA client-side navigation -->
+        <a href="/dashboard">Dashboard</a>  <!-- Triggers full browser refresh -->
+    </code>
+        <p>
+            Use <span class="txt">n:route</span> for internal paths, and stick to standard <span class="txt">href</span> for external websites.
+        </p>
+    </section>
+
+    <section>
+        <h1>Link Prefetching</h1>
+        <p>
+            Nijor automatically prefetches visible route links on the viewport to optimize page transition performance. When a link featuring <span class="txt">n:route</span> enters the user's viewport, its route bundles are loaded in the background, making transitions nearly instantaneous when clicked.
+        </p>
+        <p>
+            If a route loads extensive datasets or you want to save network bandwidth, you can opt-out of prefetching for specific links using the <span class="txt">no-prefetch</span> attribute:
+        </p>
+    <code lang="html" shiki>
+        <a nroute="/heavy-dashboard" no-prefetch>Admin Dashboard</a>
+    </code>
+    </section>
+
+    <section>
+        <h1>Route Lifecycle : <span class="txt">onRoute</span></h1>
+        <p>
+            Nijor provides an <span class="txt">onRoute()</span> lifecycle hook to execute code whenever a client-side navigation occurs.
+            This callback is ideal for tracking analytics, triggering page-view side effects, or updating global application state.
+        </p>
+    <code lang="js" shiki>
+        import \{ onRoute } from "nijor/router";
+
+        onRoute(route => \{
+            console.log("Navigated to: " + route);
+            // e.g., trigger Google Analytics page views
+        });
+    </code>
+    </section>
+
+    <section>
+        <h1>Page Metadata & Head Tag</h1>
+        <p>
+            Nijor pages can feature a custom <span class="txt">&lt;head&gt;</span> block (using the <span class="txt">&lt;nhead&gt;</span> tag inside code templates) to manage page-specific metadata such as titles, keywords, and description tags.
+        </p>
+        <p>
+            The title metadata operates dynamically in both client-side rendering (CSR) and server-side rendering (SSR), and supports route parameters:
+        </p>
+    <code lang="html" shiki>
+        <nhead>
+            <title>\{name} | Store</title>
+            <meta name="description" content="Explore {name} specifications." />
+        </nhead>
+
+        <template params="\{ id, name }">
+            <h1>Product: {name}</h1>
+            <p>ID: {id}</p>
+        </template>
+    </code>
+    </section>
+
+    <section>
+        <h1>Advanced : Understanding App.js</h1>
+        <p>
+            The file <span class="txt">src/App.js</span> is the official entry point of a Nijor web application. 
+            Nijor is versatile: you can run a Nijor app both with or without routing.
         </p>
 
-        <h2>With Routing</h2>
+        <h2>(1) Standard Setup with Routing</h2>
         <p>
-            When routing is enabled, <span class="txt">App.js</span> also initializes the router and provides a place for the compiler to inject route and layout definitions.
+            When utilizing file-based routing, <span class="txt">App.js</span> initializes the router and includes the compiler-utilized <span class="txt">//@Routes()</span> directive, which dynamically injects pages and layouts at compile time.
         </p>
     <code lang="js" shiki>
         import \{ Render } from "nijor/core";
@@ -72,20 +212,13 @@
 
         (async () => await Render(document.getElementById('app')))();
     </code>
-        <p>
-            The <span class="txt">//@Routes()</span> comment is used by the compiler.
-            During compilation, it is replaced with the generated route and layout definitions.
-        </p>
 
-        <h2>Using App.nijor with Routing</h2>
+        <h2>(2) Advanced Routing with <span class="txt">App.nijor</span></h2>
         <p>
-            If you want all layouts to share common components, you can create <span class="txt">App.nijor</span> and use it as the root component of the application.
+            If you want your layouts to share persistent components (such as a global header, floating side panel, or theme toggler), you can register a root component called <span class="txt">App.nijor</span>.
         </p>
         <p>
-            In that case, replace <span class="txt">&lt;div id="app"&gt;&lt;/div&gt;</span> in <span class="txt">index.html</span> with <span class="txt">&lt;app&gt;&lt;/app&gt;</span>.
-        </p>
-        <p>
-            Then <span class="txt">App.js</span> will look like this:
+            Replace <span class="txt">&lt;div id="app"&gt;&lt;/div&gt;</span> inside your <span class="txt">index.html</span> with <span class="txt">&lt;app&gt;&lt;/app&gt;</span>, and configure <span class="txt">App.js</span> as follows :
         </p>
     <code lang="js" shiki>
         import \{ Render } from "nijor/core";
@@ -96,207 +229,31 @@
 
         (async () => \{
             await App.run('app', 1);
-            await Render(document.getElementById('app'));
+            await Render(document.getElementById('app')) // Move &lt;div id="app"&gt;&lt;/div&gt; inside App.nijor
         })();
     </code>
-        <p>
-            In this setup, <span class="txt">App.nijor</span> is rendered first, and the router then renders layouts and pages inside the <span class="txt">#app</span> element defined inside it.
-        </p>
-    </section>
 
-    <section>
-        <h1>Layouts</h1>
+        <h2>(3) Setup Without Routing</h2>
         <p>
-            Layouts define the shared structure used by pages.
-            Common layout elements include navigation bars, headers, sidebars, footers.
-            Layouts are stored inside <span class="txt">src/layouts</span>. Every project must contain a default layout <span class="txt">src/layouts/default.nijor</span> because every page is rendered inside a layout.
+            For single-page applications or simple widgets that do not require navigation, you can bypass the router entirely. 
+            Replace <span class="txt">&lt;div id="app"&gt;&lt;/div&gt;</span> in your <span class="txt">index.html</span> with <span class="txt">&lt;app&gt;&lt;/app&gt;</span>, and bootstrap your root component directly:
         </p>
-        <p>
-            Layouts use the special attribute <span class="txt">n:slot</span> to determine where page content should be rendered. You shouldn't add id to these elements.
-        </p>
-    <code lang="html" shiki>
-        <template>
-            <nav>
-                <a n:route="/">Home</a>
-                <a n:route="/about">About</a>
-            </nav>
-
-            <div n:slot></div>
-        </template>
-    </code>
-        <p>
-            Pages can specify which layout they should use using the <span class="txt">layout</span> attribute on the <span class="txt">body</span> element.
-        </p>
-    <code lang="html" shiki>
-        <template layout="dashboard">
-            <h1>Dashboard</h1>
-        </template>
-    </code>
-        <p>
-            This will use the layout file <span class="txt">src/layouts/dashboard.nijor</span>. If the layout attribute is not defined, Nijor will automatically use <span class="txt">src/layouts/default.nijor</span>.
-        </p>
-    </section>
-
-    <section>
-        <h1>Basic Routing</h1>
-        <p>
-            Every file inside <span class="txt">src/pages</span> becomes a route.
-        </p>
-    <code lang="txt" shiki>
-        src/pages/
-            index.nijor
-            about.nijor
-    </code>
-        <p>
-            This generates the following routes:
-        </p>
-    <code lang="txt" shiki>
-        index.nijor  -> /
-        about.nijor  -> /about
-    </code>
-        <p>
-            If a route does not exist, Nijor renders <span class="txt">src/pages/404.nijor</span>.
-        </p>
-    </section>
-
-    <section>
-        <h1>Nested Routes</h1>
-        <p>
-            Folders inside <span class="txt">src/pages</span> create nested routes.
-        </p>
-    <code lang="txt" shiki>
-        src/pages/
-            blog/
-                index.nijor
-                [slug].nijor
-    </code>
-        <p>
-            This generates the following routes:
-        </p>
-    <code lang="txt" shiki>
-        blog/index.nijor   -> /blog
-        blog/[slug].nijor  -> /blog/:slug
-    </code>
-    </section>
-
-    <section>
-        <h1>Parameterized Routing</h1>
-        <p>
-            Nijor supports parameterized routing.
-            A dynamic route is created by wrapping the parameter name in square brackets in the file name.
-        </p>
-    <code lang="txt" shiki>
-        src/pages/products/[id]/[name].nijor
-    </code>
-        <p>
-            This route can match paths like <span class="txt">/products/42/laptop</span>.
-            Pages receive route parameters through <span class="txt">params</span> instead of props.
-        </p>
-    <code lang="html" shiki>
-        <template params="\{ id, name }">
-            <h1>{name}</h1>
-            <button on:click="buy('\{id}')">Buy {name}</button>
-        </template>
-
-        <nscript>
-            function buy(id) \{
-                // API calls
-            }
-        </nscript>
-    </code>
-        <p>
-            Route parameters can be used directly inside <span class="txt">script</span> just like other variables.
-            However, route parameters should not be referenced directly inside inline event function calls.
-        </p>
-    </section>
-
-    <section>
-        <h1>onRoute</h1>
-        <p>Nijor provides an <span class="txt">onRoute()</span> helper for running code whenever the current route changes.</p>
-        <p>
-            The callback receives the current route as its argument.
-            This can be useful for analytics, route-based side effects, or logic that should run after navigation.
-        </p>
-
     <code lang="js" shiki>
-        import \{ onRoute } from "nijor/router";
+        import App from "@/App.nijor";
 
-        onRoute(route => \{ /* Do something */});
+        (async () => await App.run('app', 1))();
     </code>
 
-        <p>Every time the page route changes, the registered callback runs with the updated route.</p>
-    </section>
-
-    <section>
-        <h1>Navigation</h1>
+        <h2>Component Bootstrapping Mechanics</h2>
         <p>
-            Navigation between routes is done using the <span class="txt">n:route</span> attribute on anchor tags.
-            The Nijor compiler converts <span class="txt">n:route</span> links into client-side navigation handlers, allowing pages to change without reloading the browser.
-            Using <span class="txt">href</span> instead will still work, but it will cause the page to refresh.
+            Every compiled Nijor component exposes a native <span class="txt">run()</span> method. 
+            The <span class="txt">run</span> function targets and initializes elements by their tags:
         </p>
-    <code lang="html" shiki>
-        <a nroute="/">Index Page</a> <!--Routing will be smooth ; the page won't refresh-->
-        <a href="/">Index Page</a> <!--Routing won't be smooth ; the page will refresh-->
+    <code lang="js" shiki>
+        Component.run(tagName, count);
     </code>
         <p>
-            Use <span class="txt">n:route</span> for navigation within a Nijor application.
-            Use <span class="txt">href</span> for external links.
-        </p>
-    </section>
-
-    <section>
-        <h1>Prefetching</h1>
-        <p>
-            Nijor automatically prefetches routes linked on the page to improve navigation speed.
-            When a link becomes visible in the viewport, its corresponding route is fetched in advance,
-            making page transitions nearly instant.
-        </p>
-        <p>
-            While prefetching improves performance in most cases, it may not always be desirable,
-            especially for routes with heavy data requirements or limited network conditions.
-        </p>
-        <p>
-            To disable prefetching for a specific link, use the <span class="txt">no-prefetch</span> attribute:
-        </p>
-
-    <code lang="html" shiki>
-        <a nroute="/products" no-prefetch>Products</a>
-    </code>
-
-        <p>
-            This ensures that the route is only loaded when the user actually navigates to it.
-        </p>
-    </section>
-
-    <section>
-        <h1>Metadata</h1>
-        <p>
-            Pages inside the <span class="txt">src/pages</span> directory can include a <span class="txt">head</span> tag.
-            This tag is used for page metadata such as the document title and meta tags.
-        </p>
-        <p>
-            The <span class="txt">title</span> defined inside <span class="txt">head</span> works in both CSR and SSR.
-            Other metadata written inside <span class="txt">head</span> is mainly used during SSR.
-        </p>
-        <p>Route parameters can also be used inside the <span class="txt">head</span> tag.</p>
-
-    <code lang="html" shiki>
-        <nhead>
-            <title>\{name} | Product</title>
-            <meta name="description" content="Buy {name} from our store" />
-        </nhead>
-
-        <template params="\{ id, name }">
-            <section>
-                <h1>{name}</h1>
-                <p>Product ID: {id}</p>
-            </section>
-        </template>
-    </code>
-
-        <p>
-            In client-side rendering, Nijor uses the page title from the <span class="txt">head</span> tag.
-            Other metadata is primarily useful when server-side rendering is enabled.
+            The <span class="txt">tagName</span> defines which element is targetable, and <span class="txt">count</span> determines how many matching DOM occurrences should be swapped out. Under normal development circumstances, the Nijor compiler handles this bootstrapping sequence automatically.
         </p>
     </section>
 

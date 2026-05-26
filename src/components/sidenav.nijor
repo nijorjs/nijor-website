@@ -61,6 +61,10 @@
 
     $.route = route.value;
 
-    route.subscribe(r => $.route = r);
+    const unsub = route.subscribe(r => $.route = r);
+
+    export function onUnmount(){
+        unsub();
+    }
 
 </script>

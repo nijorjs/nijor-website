@@ -141,7 +141,7 @@
     $.route = route.value;
     route.subscribe(r => $.route = r);
 
-    function close() {
+    export function close() {
         const sidenav = document.getElementById('sidenav-mobile');
         sidenav.style.width = "0%";
     }

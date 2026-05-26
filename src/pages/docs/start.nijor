@@ -1,53 +1,62 @@
 <head>
     <title>Quick Start | Nijor</title>
+    <meta name="keywords" content="Nijor Quick Start, Create Nijor App, Run Nijor Project"/>
+    <meta name="description" content="Get started with Nijor. Learn how to create a new project, start the local development server, and build for production.">
 </head>
+
 <body layout="docs">
     <section>
-        <h1>Quick Start</h1>
-        <p>This guide will help you create and run your first Nijor project.</p>
-    </section>
-
-    <section>
-        <h1>Install the CLI</h1>
+        <h1>Quick Start Guide</h1>
         <p>
-            In order to use Nijor, make sure you have Bun installed (Node will also work). <br>
-            Install Nijor globally :
+            Welcome to Nijor! This guide will help you set up, run, and build your very first Nijor web application in just a few minutes.
         </p>
-    <code lang="shell" shiki>
-        bun add nijor -g
-    </code>
-    </section>
 
-    <section>
-        <h1>Create a project</h1>
-    <code lang="shell" shiki>
-        nijor create my-app
-    </code>
-
-    <code lang="shell" shiki>
-        cd my-app
-    </code>
-        <p>A Nijor project is created with many files and folders.</p>
-    </section>
-
-    <section>
-        <h1>Start the dev server</h1>
-    <code lang="shell" shiki>
-        nijor dev
-    </code>
-        <p>The dev server will start on port 3000 with <span class="txt">live_reload</span> enabled. You can change this behavior in the <span class="txt">nijor.config.js</span>.</p>
-    </section>
-
-    <section>
-        <h1>Build for production</h1>
+        <h2>1. Scaffold a New Project</h2>
         <p>
-            When you're ready to deploy your app, you can create an optimized production build:
+            You can quickly create a pre-configured project structure using our CLI tool. Choose your preferred package manager to run the initializer:
         </p>
-    <code lang="shell" shiki>
-        nijor build
-    </code>
+        
+        <code lang="shell" shiki>
+            npx create-nijor-app my-app
+        </code>
+        
+        <p>If you prefer using Bun for faster performance, you can use:</p>
+        
+        <code lang="shell" shiki>
+            bunx create-nijor-app my-app
+        </code>
+
+        <h2>2. Start the Development Server</h2>
         <p>
-            This will generate a production-ready version of your app with optimized assets.
+            Navigate to your new project directory and spin up the local development server. Nijor uses Bun to deliver an exceptionally fast development cycle:
+        </p>
+        
+        <code lang="shell" shiki>
+            cd my-app
+            bun run dev
+        </code>
+        
+        <p>
+            Once started, the development server will be active at <span class="txt">http://localhost:3000</span> with <span class="txt">live reload</span> fully enabled. 
+            Any changes you make to your components or routes will instantly reflect in the browser. You can customize the server port and reload settings inside the <span class="txt">nijor.config.js</span> file.
+        </p>
+
+        <h2>3. Build for Production</h2>
+        <p>
+            When your application is ready to be deployed, generate an optimized production build using the following command:
+        </p>
+        
+        <code lang="shell" shiki>
+            bun run build
+        </code>
+        
+        <p>
+            This command triggers the Nijor compiler to analyze your routes, bundle your static assets, compile your scoped styling, and output a highly optimized, production-ready version of your app.
+        </p>
+
+        <h2>Next Steps</h2>
+        <p>
+            Now that your local environment is running, dive into <a nroute="/docs/components">Components</a> to see how to build user interfaces, or explore <a nroute="/docs/routing">Routing</a> to understand file-based page organization in Nijor!
         </p>
     </section>
 </body>

@@ -1,124 +1,178 @@
 <head>
     <title>Components | Nijor</title>
-    <meta name="keywords" content="Components in Nijor, Nijor Components"/>
-    <meta name="description" content="Components in Nijor">
+    <meta name="keywords" content="Components in Nijor, Nijor Components, Component Structure"/>
+    <meta name="description" content="Learn how to build modular, reusable interfaces in Nijor using component-driven development.">
 </head>
 <body layout="docs">
 
     <section>
         <h1>Components</h1>
         <p>
-            User interfaces in Nijor are built using components. ( You can think of them as custom html tags with custom attributes )
-            A component is defined inside a <span class="txt">.nijor</span> file. Components encapsulate markup, logic, and styles in a single file, making them easy to reuse and maintain.
+            Components are the fundamental building blocks of a Nijor user interface. You can think of them as custom HTML tags equipped with custom attributes (props) and encapsulated logic.
+        </p>
+        <p>
+            Every component in Nijor is defined in its own <span class="txt">.nijor</span> file. By bundling markup, behavior, and styling into a single file, Nijor components are highly modular, reusable, and easy to maintain.
         </p>
     </section>
 
     <section>
-        <h1>Structure of a Component</h1>
+        <h1>Component Structure</h1>
+        <p>
+            A typical Nijor component file contains three self-contained blocks: a template for markup, an optional script for logic, and an optional style block for scoped CSS.
+        </p>
     <code lang="html" shiki>
         <template>
-            <!-- Your HTML goes here -->
+            <!-- Your HTML structure goes here -->
         </template>
+        
         <nstyle>
-            /* Your CSS goes Here */
-            /* CSS here is scoped ; the styles defined here will only apply to html inside this body tag */
+            /* Your CSS styling goes here */
+            /* Styles here are scoped and will only apply to the HTML inside this component */
         </nstyle>
+        
         <nscript>
-            // Your JS + Import statements goes here
-        </nscript>
-        <nscript defer>
-            // JS writen here runs only after the UI of the component is fully rendered
-            // Import statements are not allowed here
+            // Your JavaScript logic goes here
         </nscript>
     </code>
     </section>
 
     <section>
-        <h1>Props (Attributes)</h1>
+        <h1>Props (Component Attributes)</h1>
         <p>
-            Variables declared inside the <span class="txt">script</span> section can be used directly in the template. They are inserted using curly braces. <br>
-            Props are the attributes passed down to our components. Props is actually an object which contains all the attributes passed down from the parent and we can destructure them to make it easy to read. <br>
-            Props are also a type of variable and accessing them in the template is similar to accessing other variables. <span class="txt">props</span> is an attribute of body, and we can access props value inside the script too. <br>
-            <span class="txt">html</span> is a special prop which is the innerHTML of a component being called.
+            Props allow you to pass dynamic data down from parent components to child components. In Nijor, you declare which props a component accepts by destructuring them directly inside the <span class="txt">props</span> attribute of the <span class="txt">&lt;template&gt;</span> tag.
+        </p>
+        <p>
+            Once declared, these props can be referenced directly in your template using curly brace interpolation <span class="txt">\{variableName\}</span>, or inside your <span class="txt">&lt;script&gt;</span> block as standard variables.
+        </p>
+        <p>
+            Nijor also provides a special <span class="txt">html</span> prop, which automatically represents the inner markup passed between the component's opening and closing tags (similar to children in React or slots in Vue).
         </p>
     <code lang="html" shiki>
         <template props="\{ name , age }">
-            <h1>Hello { name } !</h1>
-            <p>You are { age } and you are { isEligible } to drive </p>
+            <h1>Hello, \{ name }!</h1>
+            <p>You are \{ age } years old, which makes you \{ isEligible } to drive.</p>
         </template>
+        
         <nscript>
-            const isEligible = parseInt(age) > 18 ? "eligible" : "not eligible";
+            const isEligible = parseInt(age) >= 18 ? "eligible" : "not eligible";
         </nscript>
     </code>
     </section>
 
     <section>
         <h1>Event Handling</h1>
-        <p>While working in <span class="txt">.nijor</span> files, inline events are declared using the <span class="txt">on:event</span> syntax. Example : onclick becomes on:click.</p>
+        <p>
+            User interactions are managed using standard inline event listeners. In <span class="txt">.nijor</span> files, events are declared using the <span class="txt">on:event</span> syntax (e.g., <span class="txt">onclick</span> becomes <span class="txt">on:click</span>).
+        </p>
+        <p>
+            To expose your event handlers to the template, you must declare the handler functions inside the <span class="txt">&lt;script&gt;</span> tag and prefix them with the <span class="txt">export</span> keyword.
+        </p>
     <code lang="html" shiki>
         <template>
-            <p id="msg"></p>
-            <button on:click="sayHello()">Click</button>
+            <p id="msg">Click the button below...</p>
+            <button on:click="sayHello()">Say Hello</button>
         </template>
 
         <nscript>
-            function sayHello() \{
-                document.getElementById('msg').innerHTML = "Hello World !";
+            export function sayHello() \{
+                document.getElementById('msg').innerHTML = "Hello, World!";
             }
         </nscript>
     </code>
     </section>
 
     <section>
-        <h1>Importing Components</h1>
-        <p>Components are imported using the <span class="txt">import</span> tag outside <span class="txt">body</span>.</p> 
+        <h1>Importing & Registering Components</h1>
+        <p>
+            To use a child component inside another component, page, or layout, import it using the self-closing <span class="txt">&lt;import&gt;</span> tag outside the <span class="txt">&lt;template&gt;</span> block:
+        </p> 
     <code lang="html" shiki>
-        <import name="..." source="..."/>
+        <import name="component-tag-name" source="path-to-component"/>
     </code>
     <p>
-        Component names are case-insensitive just like regular html tags. You can name your component anything. <br>
-        But avoid the following names : <span class="txt">body</span>, <span class="txt">head</span>, <span class="txt">import</span>, <span class="txt">style</span>, <span class="txt">script</span>
+        Component names are case-insensitive, just like standard HTML tags. You can name your component anything, but you must avoid using reserved native names: <span class="txt">body</span>, <span class="txt">head</span>, <span class="txt">import</span>, <span class="txt">style</span>, and <span class="txt">script</span>.
     </p>
     </section>
 
     <section>
-        <h1>Example : Creating & Importing a component</h1>
+        <h1>End-to-End Example</h1>
+        <p>
+            Below is a full example demonstrating how to build a reusable notification card component and import it into a parent dashboard page.
+        </p>
+        
+        <h3>1. The Child Component: <span class="txt">src/components/notification-box.nijor</span></h3>
     <code lang="html" shiki>
         <template props="\{ title , html }">
             <div class="box">
-                <h3>{ title }</h3>
-                <p>{ html }</p>
-                <button on:click="showMessage('{html}')">Show Message</button>
+                <h3>\{ title }</h3>
+                <p>\{ html }</p>
+                <button on:click="showMessage('{html}')">Show Details</button>
             </div>
         </template>
 
         <nscript>
-            function showMessage(msg) \{
+            export function showMessage(msg) \{
                 alert(msg);
             }
         </nscript>
 
         <nstyle>
             .box \{
-                border: 1px solid #ccc;
-                padding: 14px;
-                border-radius: 6px;
-                background: #f8f8f8;
+                border: 1px solid #ddd;
+                padding: 16px;
+                border-radius: 8px;
+                background: #fafafa;
                 max-width: 320px;
+                margin-bottom: 12px;
             }
 
             button \{
-                margin-top: 10px;
+                margin-top: 8px;
+                padding: 6px 12px;
+                background: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
             }
         </nstyle>
     </code>
+    
+    <h3>2. The Parent Page: <span class="txt">src/pages/dashboard.nijor</span></h3>
     <code lang="html" shiki>
         <import name="notification-box" source="@/components/notification-box.nijor">
+        
         <template>
-            <h1>System Notifications</h1>
-            <notification-box title="Update Available">A new version of the application is ready to install</notification-box>
-            <notification-box title="Connection Status">The application is currently running in offline mode</notification-box>
+            <h1>System Alerts Dashboard</h1>
+            <notification-box title="Update Available">A new version of the framework is ready to install.</notification-box>
+            <notification-box title="Connection Warning">The application is currently running in offline fallback mode.</notification-box>
         </template>
+    </code>
+    </section>
+
+    <section>
+        <h1>Component Lifecycle Events</h1>
+        <p>
+            Nijor components expose two native lifecycle callbacks that allow you to hook into the mount and unmount processes:
+        </p>
+    <code lang="html" shiki>
+        <template>
+            <!-- Component Markup -->
+        </template>
+        
+        <nscript>
+            export function onMount()\{
+                // Runs immediately after the component is injected into the DOM.
+                // Has full access to passed props.
+                // Can be declared as async (useful for data fetching).
+            }
+
+            export function onUnmount()\{
+                // Runs immediately after the component is removed from the DOM.
+                // Has full access to passed props.
+                // Must be synchronous; cannot be async.
+            }
+        </nscript>
     </code>
     </section>
 
